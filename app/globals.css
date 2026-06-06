@@ -39,18 +39,6 @@ body {
   @apply rounded-[30px] border border-[#eadfcc] bg-white shadow-[0_15px_40px_rgba(34,27,24,0.07)];
 }
 
-.app-chip {
-  @apply shrink-0 rounded-2xl border px-4 py-2.5 text-sm font-bold transition;
-}
-
-.app-chip-active {
-  @apply border-[#9b6128] bg-[#9b6128] text-white;
-}
-
-.app-chip-idle {
-  @apply border-[#eadfcc] bg-white text-[#221b18] hover:border-[#9b6128];
-}
-
 .btn-primary {
   @apply inline-flex items-center justify-center rounded-2xl bg-[#9b6128] px-5 py-3 text-sm font-black text-white transition hover:bg-[#7a461c];
 }
@@ -79,10 +67,6 @@ body {
   @apply text-sm font-bold text-[#7e7169];
 }
 
-.nav-link {
-  @apply text-sm font-bold text-[#7e7169] transition hover:text-[#9b6128];
-}
-
 .admin-shell {
   @apply min-h-screen bg-[#fbf4e8] text-[#221b18];
 }
@@ -101,4 +85,39 @@ body {
 
 .admin-muted {
   @apply rounded-xl border border-[#eadfcc] bg-white px-4 py-3 text-sm font-black text-[#221b18] transition hover:border-[#9b6128];
+}
+
+.tap-animate {
+  transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+
+.tap-animate:active {
+  transform: scale(.96);
+}
+
+.float-in {
+  animation: floatIn .55s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.slide-up {
+  animation: slideUp .42s cubic-bezier(.2,.8,.2,1) both;
+}
+
+.card-pop {
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.card-pop:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 42px rgba(34,27,24,.12);
+}
+
+@keyframes floatIn {
+  from { opacity: 0; transform: translateY(18px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -8,7 +8,7 @@ export default async function HomePage() {
     prisma.product.findMany({
       where: { available: true },
       include: { category: true },
-      orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }]
+      orderBy: [{ sortOrder: 'asc' }, { featured: 'desc' }, { createdAt: 'desc' }]
     }),
     prisma.category.findMany({
       orderBy: { sortOrder: 'asc' },
@@ -16,7 +16,7 @@ export default async function HomePage() {
         products: {
           where: { available: true },
           include: { category: true },
-          orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }]
+          orderBy: [{ sortOrder: 'asc' }, { featured: 'desc' }, { createdAt: 'desc' }]
         }
       }
     }),
@@ -37,6 +37,10 @@ export default async function HomePage() {
     rating: product.rating,
     badge: product.badge,
     featured: product.featured,
+    piecePrice: product.piecePrice,
+    price250g: product.price250g,
+    price500g: product.price500g,
+    price1kg: product.price1kg,
     category: product.category ? { name: product.category.name } : null
   }));
 
@@ -55,6 +59,10 @@ export default async function HomePage() {
       rating: product.rating,
       badge: product.badge,
       featured: product.featured,
+      piecePrice: product.piecePrice,
+      price250g: product.price250g,
+      price500g: product.price500g,
+      price1kg: product.price1kg,
       category: product.category ? { name: product.category.name } : null
     }))
   }));

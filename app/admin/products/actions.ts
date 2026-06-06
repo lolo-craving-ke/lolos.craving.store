@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma';
 
 const MAX_IMAGE_SIZE = 3 * 1024 * 1024;
 
-async function imageFromForm(formData: FormData, fieldName: string, urlFieldName: string) {
+async function imageFromForm(formData: FormData, fieldName: string, urlFieldName: string, currentImage?: string | null) {
   const imageUrl = String(formData.get(urlFieldName) || '').trim();
   const file = formData.get(fieldName);
 
@@ -19,41 +19,55 @@ async function imageFromForm(formData: FormData, fieldName: string, urlFieldName
     return `data:${file.type};base64,${base64}`;
   }
 
-  return imageUrl || null;
+  return imageUrl || currentImage || null;
+}
+
+function numberOrNull(value: FormDataEntryValue | null) {
+  const n = Number(value || 0);
+  return Number.isFinite(n) && n > 0 ? Math.round(n) : null;
+}
+
+function productData(formData: FormData, imageUrl: string | null) {
+  const saleType = String(formData.get('saleType') || 'QUANTITY') === 'WEIGHT' ? 'WEIGHT' : 'QUANTITY';
+  const piecePrice = numberOrNull(formData.get('piecePrice'));
+  const price250g = numberOrNull(formData.get('price250g'));
+  const price500g = numberOrNull(formData.get('price500g'));
+  const price1kg = numberOrNull(formData.get('price1kg'));
+  const rawPrice = numberOrNull(formData.get('price'));
+  const price = saleType === 'WEIGHT'
+    ? price1kg || rawPrice || 1
+    : piecePrice || rawPrice || 1;
+
+  return {
+    name: String(formData.get('name') || '').trim(),
+    description: String(formData.get('description') || '').trim(),
+    price,
+    piecePrice: saleType === 'QUANTITY' ? piecePrice || price : null,
+    price250g: saleType === 'WEIGHT' ? price250g : null,
+    price500g: saleType === 'WEIGHT' ? price500g : null,
+    price1kg: saleType === 'WEIGHT' ? price1kg || price : null,
+    categoryId: String(formData.get('categoryId') || '').trim() || null,
+    imageUrl,
+    saleType,
+    rating: Math.min(5, Math.max(0, Number(formData.get('rating') || 4.8))),
+    badge: String(formData.get('badge') || '').trim() || null,
+    featured: formData.get('featured') === 'on',
+    available: formData.get('available') === 'on',
+    sortOrder: Number(formData.get('sortOrder') || 0)
+  };
 }
 
 export async function createProduct(formData: FormData) {
   try {
-    const name = String(formData.get('name') || '').trim();
-    const description = String(formData.get('description') || '').trim();
-    const price = Number(formData.get('price') || 0);
-    const categoryIdValue = String(formData.get('categoryId') || '').trim();
-    const categoryId = categoryIdValue || null;
     const imageUrl = await imageFromForm(formData, 'imageFile', 'imageUrl');
-    const saleType = String(formData.get('saleType') || 'QUANTITY') === 'WEIGHT' ? 'WEIGHT' : 'QUANTITY';
-    const rating = Math.min(5, Math.max(0, Number(formData.get('rating') || 4.8)));
-    const badge = String(formData.get('badge') || '').trim() || null;
-    const featured = formData.get('featured') === 'on';
+    const data = productData(formData, imageUrl);
 
-    if (!name || !Number.isFinite(price) || price <= 0) redirect('/admin/products?error=invalid-data');
+    if (!data.name) redirect('/admin/products?error=invalid-data');
 
-    await prisma.product.create({
-      data: {
-        name,
-        description,
-        price: Math.round(price),
-        categoryId,
-        imageUrl,
-        saleType,
-        rating,
-        badge,
-        featured,
-        available: formData.get('available') === 'on'
-      }
-    });
+    await prisma.product.create({ data });
 
     revalidatePath('/admin/products');
-    revalidatePath('/products');
+    revalidatePath('/admin/sort-products');
     revalidatePath('/');
   } catch (error) {
     console.error('CREATE_PRODUCT_ERROR', error);
@@ -61,6 +75,31 @@ export async function createProduct(formData: FormData) {
   }
 
   redirect('/admin/products?success=product-added');
+}
+
+export async function updateProduct(formData: FormData) {
+  const id = String(formData.get('id') || '');
+
+  try {
+    const current = await prisma.product.findUnique({ where: { id } });
+    if (!current) redirect('/admin/products?error=missing-product');
+
+    const imageUrl = await imageFromForm(formData, 'imageFile', 'imageUrl', current.imageUrl);
+    const data = productData(formData, imageUrl);
+
+    if (!data.name) redirect(`/admin/products/${id}?error=invalid-data`);
+
+    await prisma.product.update({ where: { id }, data });
+
+    revalidatePath('/admin/products');
+    revalidatePath('/admin/sort-products');
+    revalidatePath('/');
+  } catch (error) {
+    console.error('UPDATE_PRODUCT_ERROR', error);
+    redirect(`/admin/products/${id}?error=update-failed`);
+  }
+
+  redirect('/admin/products?success=product-updated');
 }
 
 export async function updateAvailability(formData: FormData) {
@@ -85,6 +124,7 @@ export async function deleteProduct(formData: FormData) {
   try {
     await prisma.product.delete({ where: { id } });
     revalidatePath('/admin/products');
+    revalidatePath('/admin/sort-products');
     revalidatePath('/');
   } catch (error) {
     console.error('DELETE_PRODUCT_ERROR', error);
