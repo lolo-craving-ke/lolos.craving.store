@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { storeConfig } from '@/lib/config';
 import { FloatingChat } from '@/components/FloatingChat';
+import { FloatingCart } from '@/components/FloatingCart';
 
 export const metadata: Metadata = {
   title: `${storeConfig.name} | Official Store`,
@@ -13,6 +14,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         {children}
+        <FloatingCart />
         <FloatingChat />
       </body>
     </html>

@@ -3,19 +3,64 @@ import Image from 'next/image';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { prisma } from '@/lib/prisma';
-import { ProductCard } from '@/components/ProductCard';
 import { storeConfig } from '@/lib/config';
 import { ScrollReveal } from '@/components/ScrollReveal';
+import { HomeProductsByCategory } from '@/components/HomeProductsByCategory';
 
 export default async function HomePage() {
-  const products = await prisma.product.findMany({
-    where: { available: true },
-    include: { category: true },
-    orderBy: { createdAt: 'desc' },
-    take: 4
-  });
+  const [products, categories] = await Promise.all([
+    prisma.product.findMany({
+      where: { available: true },
+      include: { category: true },
+      orderBy: { createdAt: 'desc' }
+    }),
+    prisma.category.findMany({
+      orderBy: { sortOrder: 'asc' },
+      include: {
+        products: {
+          where: { available: true },
+          include: { category: true },
+          orderBy: { createdAt: 'desc' }
+        }
+      }
+    })
+  ]);
 
   const heroProduct = products.find((product) => product.imageUrl);
+
+  const uncategorizedProducts = products.filter((product) => !product.categoryId);
+  const groups = [
+    ...categories
+      .filter((category) => category.products.length > 0)
+      .map((category) => ({
+        id: category.id,
+        name: category.name,
+        products: category.products.map((product) => ({
+          id: product.id,
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          imageUrl: product.imageUrl,
+          available: product.available,
+          category: product.category ? { name: product.category.name } : null
+        }))
+      })),
+    ...(uncategorizedProducts.length > 0
+      ? [{
+          id: 'uncategorized',
+          name: 'Other Products',
+          products: uncategorizedProducts.map((product) => ({
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            price: product.price,
+            imageUrl: product.imageUrl,
+            available: product.available,
+            category: null
+          }))
+        }]
+      : [])
+  ];
 
   return (
     <>
@@ -34,7 +79,7 @@ export default async function HomePage() {
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/products" className="btn-solid">View Menu</Link>
+              <a href="#products" className="btn-solid">View Products</a>
               <a
                 href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent("Hello lolo's craving, I would like to place an order.")}`}
                 target="_blank"
@@ -79,36 +124,19 @@ export default async function HomePage() {
           </div>
         </section>
 
-        <section className="container-wide py-10 reveal">
-          <div className="flex flex-wrap gap-2">
-            {['Cookies', 'Kahk', 'Petit Four', 'Kunafa', 'Donuts', 'Custom Boxes'].map((item) => (
-              <Link key={item} href="/products" className="rounded-full border border-[#d9d0dc] bg-white px-4 py-2 text-sm font-medium text-[#3a243f] transition hover:border-[#3a243f]">
-                {item}
-              </Link>
-            ))}
-          </div>
-        </section>
-
-        <section className="container-wide py-16 reveal">
-          <div className="mb-8 flex items-end justify-between gap-4">
+        <section id="products" className="container-wide py-16 reveal">
+          <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-end">
             <div>
-              <p className="section-kicker">Featured products</p>
-              <h2 className="section-title mt-2">Customer favorites</h2>
+              <p className="section-kicker">All products</p>
+              <h2 className="section-title mt-2">Browse by category</h2>
+              <p className="mt-3 max-w-2xl leading-7 text-[#746b78]">
+                Select a category to view its products directly on the homepage, or browse all available items.
+              </p>
             </div>
-            <Link href="/products" className="text-sm font-semibold text-[#3a243f] hover:underline">View all products</Link>
+            <Link href="/products" className="text-sm font-semibold text-[#3a243f] hover:underline">Open full menu page</Link>
           </div>
 
-          {products.length === 0 ? (
-            <div className="rounded-2xl border border-[#e8e1ea] bg-white p-10 text-center shadow-sm">
-              <h3 className="text-2xl font-semibold">No products yet</h3>
-              <p className="mt-2 text-[#746b78]">Add products from the admin dashboard.</p>
-              <Link href="/admin/login" className="btn-solid mt-5">Go to admin</Link>
-            </div>
-          ) : (
-            <div className="grid gap-6 md:grid-cols-4">
-              {products.map((product) => <ProductCard key={product.id} product={product} />)}
-            </div>
-          )}
+          <HomeProductsByCategory groups={groups} />
         </section>
 
         <section id="about" className="container-wide py-16 reveal">
@@ -150,9 +178,9 @@ export default async function HomePage() {
         <section className="container-wide py-16 reveal">
           <div className="rounded-3xl border border-[#e8e1ea] bg-white p-8 text-center shadow-[0_16px_45px_rgba(42,35,45,0.05)]">
             <p className="section-kicker">Ready to order?</p>
-            <h2 className="mt-3 text-3xl font-semibold">Browse the menu or chat with us on WhatsApp.</h2>
+            <h2 className="mt-3 text-3xl font-semibold">Add products to the cart or chat with us on WhatsApp.</h2>
             <div className="mt-6 flex justify-center gap-3">
-              <Link href="/products" className="btn-solid">View Menu</Link>
+              <a href="#products" className="btn-solid">View Products</a>
               <a href={`https://wa.me/${storeConfig.whatsapp}`} target="_blank" className="btn-outline">WhatsApp Order</a>
             </div>
           </div>

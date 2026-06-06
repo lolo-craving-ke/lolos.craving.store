@@ -12,11 +12,10 @@ export function Header() {
 
         <nav className="hidden items-center gap-8 md:flex">
           <Link className="nav-link" href="/">Home</Link>
-          <Link className="nav-link" href="/products">Menu</Link>
+          <a className="nav-link" href="/#products">Products</a>
           <a className="nav-link" href="/#about">About</a>
           <a className="nav-link" href="/#custom">Custom Orders</a>
           <a className="nav-link" href={storeConfig.maps} target="_blank">Location</a>
-          <Link className="nav-link" href="/cart">Cart</Link>
         </nav>
 
         <a
