@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { money } from '@/lib/money';
 import { storeConfig } from '@/lib/config';
-import { SocialLinks } from '@/components/SocialLinks';
 
 type Product = {
   id: string;
@@ -13,102 +12,98 @@ type Product = {
   price: number;
   imageUrl?: string | null;
   available: boolean;
+  saleType: string;
+  rating: number;
+  badge?: string | null;
+  featured: boolean;
   category?: { name: string } | null;
 };
 
-type CategoryGroup = {
+type Category = {
   id: string;
   name: string;
+  iconUrl?: string | null;
   products: Product[];
 };
 
-function addToCart(product: Product, quantity = 1) {
+type Offer = {
+  id: string;
+  title: string;
+  subtitle?: string | null;
+  label?: string | null;
+  discountText?: string | null;
+  buttonText: string;
+  imageUrl?: string | null;
+  link: string;
+};
+
+function addToCart(product: Product, quantity = 1, weight?: number) {
   const cart = JSON.parse(localStorage.getItem('lolos_cart') || '[]');
-  const existing = cart.find((item: any) => item.id === product.id);
+  const itemId = weight ? `${product.id}-${weight}kg` : product.id;
+  const itemName = weight ? `${product.name} - ${weight} Kg` : product.name;
+  const itemPrice = weight ? Math.round(product.price * weight) : product.price;
+  const existing = cart.find((item: any) => item.id === itemId);
 
   if (existing) existing.quantity += quantity;
-  else cart.push({ id: product.id, name: product.name, price: product.price, imageUrl: product.imageUrl, quantity });
+  else cart.push({ id: itemId, productId: product.id, name: itemName, price: itemPrice, imageUrl: product.imageUrl, quantity });
 
   localStorage.setItem('lolos_cart', JSON.stringify(cart));
   window.dispatchEvent(new Event('cart-updated'));
 }
 
-function ProductImage({ product, large = false }: { product: Product; large?: boolean }) {
-  if (product.imageUrl) {
-    return <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover" />;
-  }
-
+function ProductImage({ src, name }: { src?: string | null; name: string }) {
+  if (src) return <img src={src} alt={name} className="h-full w-full object-cover" />;
   return (
-    <div className="grid h-full w-full place-items-center bg-[#fff2df] p-5">
-      <Image src="/logo.png" alt={product.name} width={220} height={180} className={`${large ? 'max-w-[260px]' : 'max-w-[120px]'} h-auto w-full object-contain opacity-80`} />
+    <div className="grid h-full w-full place-items-center bg-[#fbf4e8] p-4">
+      <Image src="/logo.png" alt={name} width={180} height={140} className="h-auto w-full max-w-[120px] object-contain opacity-80" />
     </div>
   );
 }
 
-function CompactProductCard({ product, onOpen }: { product: Product; onOpen: (product: Product) => void }) {
+function ProductCard({ product, onOpen }: { product: Product; onOpen: (product: Product) => void }) {
   return (
-    <article className="rounded-[24px] border border-[#eadfd0] bg-white p-3 shadow-[0_12px_32px_rgba(36,27,38,0.06)]">
+    <article className="overflow-hidden rounded-[24px] bg-white shadow-[0_12px_32px_rgba(34,27,24,0.08)]">
       <button type="button" onClick={() => onOpen(product)} className="block w-full text-left">
-        <div className="aspect-square overflow-hidden rounded-[20px] bg-[#fff2df]">
-          <ProductImage product={product} />
+        <div className="relative aspect-[1.55] overflow-hidden bg-[#fbf4e8]">
+          <ProductImage src={product.imageUrl} name={product.name} />
+          <div className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-1 text-[11px] font-black text-[#221b18]">
+            {Number(product.rating || 0).toFixed(1)}
+          </div>
+          {product.badge && <div className="absolute right-2 top-2 rounded-full bg-[#f5a623] px-2 py-1 text-[10px] font-black text-white">{product.badge}</div>}
         </div>
-        <p className="mt-3 text-[11px] font-bold uppercase tracking-[0.14em] text-[#df8e10]">{product.category?.name || 'Product'}</p>
-        <h3 className="mt-1 line-clamp-2 min-h-[44px] text-sm font-bold leading-5 text-[#241b26]">{product.name}</h3>
-        <p className="mt-2 text-sm font-bold text-[#3a243f]">{money(product.price)}</p>
+        <div className="p-3">
+          <p className="text-[11px] font-bold uppercase tracking-wide text-[#9b6128]">{product.category?.name || 'Product'}</p>
+          <h3 className="mt-1 line-clamp-2 min-h-[40px] text-sm font-black leading-5">{product.name}</h3>
+          <div className="mt-2 flex items-center justify-between">
+            <p className="text-sm font-black text-[#9b6128]">{money(product.price)}{product.saleType === 'WEIGHT' ? ' / Kg' : ''}</p>
+            <span className="rounded-full bg-[#fbf4e8] px-2 py-1 text-[11px] font-bold text-[#7e7169]">{product.saleType === 'WEIGHT' ? 'Weight' : 'Qty'}</span>
+          </div>
+        </div>
       </button>
-
-      <div className="mt-3 flex items-center gap-2">
+      <div className="px-3 pb-3">
         <button
           type="button"
-          onClick={() => addToCart(product)}
-          className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-[#f4a62a] text-xl font-bold text-white shadow-[0_10px_20px_rgba(244,166,42,0.22)]"
-          aria-label={`Add ${product.name} to cart`}
+          onClick={() => product.saleType === 'WEIGHT' ? onOpen(product) : addToCart(product)}
+          className="w-full rounded-2xl bg-[#9b6128] px-4 py-3 text-sm font-black text-white"
         >
-          +
-        </button>
-        <button
-          type="button"
-          onClick={() => onOpen(product)}
-          className="h-10 flex-1 rounded-2xl border border-[#eadfd0] text-xs font-bold text-[#3a243f]"
-        >
-          Details
+          Add
         </button>
       </div>
     </article>
   );
 }
 
-function PopularCard({ product, onOpen }: { product: Product; onOpen: (product: Product) => void }) {
-  return (
-    <button
-      type="button"
-      onClick={() => onOpen(product)}
-      className="w-[150px] shrink-0 rounded-[24px] border border-[#eadfd0] bg-white p-3 text-left shadow-[0_12px_30px_rgba(36,27,38,0.06)] md:w-[180px]"
-    >
-      <div className="aspect-square overflow-hidden rounded-[20px] bg-[#fff2df]">
-        <ProductImage product={product} />
-      </div>
-      <h3 className="mt-3 line-clamp-1 text-sm font-bold text-[#241b26]">{product.name}</h3>
-      <p className="mt-1 text-sm font-bold text-[#f4a62a]">{money(product.price)}</p>
-    </button>
-  );
-}
-
-export function StoreAppHome({ products, groups }: { products: Product[]; groups: CategoryGroup[] }) {
+export function StoreAppHome({ products, categories, offers }: { products: Product[]; categories: Category[]; offers: Offer[] }) {
   const [activeCategory, setActiveCategory] = useState('All');
   const [query, setQuery] = useState('');
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [quantity, setQuantity] = useState(1);
-
-  const heroProduct = products.find((product) => product.imageUrl) || products[0];
-  const popularProducts = products.slice(0, 8);
+  const [weight, setWeight] = useState(1);
 
   const filteredProducts = useMemo(() => {
     const q = query.trim().toLowerCase();
-
     let items = activeCategory === 'All'
       ? products
-      : groups.find((group) => group.name === activeCategory)?.products || [];
+      : categories.find((category) => category.name === activeCategory)?.products || [];
 
     if (q) {
       items = items.filter((product) =>
@@ -117,217 +112,162 @@ export function StoreAppHome({ products, groups }: { products: Product[]; groups
     }
 
     return items;
-  }, [activeCategory, groups, products, query]);
+  }, [activeCategory, products, categories, query]);
+
+  const fallbackOffer = {
+    id: 'fallback',
+    title: 'Fresh sweets offer',
+    subtitle: 'Order your favorite bakery treats today',
+    label: 'Limited time',
+    discountText: 'Special Offer',
+    buttonText: 'Shop Now',
+    imageUrl: products.find((p) => p.imageUrl)?.imageUrl || null,
+    link: '#products'
+  };
+
+  const displayOffers = offers.length > 0 ? offers : [fallbackOffer];
 
   function openProduct(product: Product) {
     setSelectedProduct(product);
-    setQuantity(1);
+    setWeight(1);
   }
 
   return (
     <div className="app-shell">
-      <section className="grid gap-6 md:grid-cols-[1fr_0.9fr] md:items-center md:gap-10">
-        <div className="pt-2 md:pt-8">
-          <p className="text-sm font-semibold text-[#7b717d]">Official store</p>
-          <h1 className="mt-2 text-4xl font-black leading-[1.03] tracking-tight text-[#241b26] md:text-7xl">
-            What would you like today?
-          </h1>
-          <p className="mt-4 max-w-xl text-base leading-7 text-[#7b717d] md:text-lg">
-            Fresh Egyptian sweets, bakery treats and custom boxes from {storeConfig.name}.
-          </p>
-
-          <div className="mt-6 rounded-[24px] border border-[#eadfd0] bg-white p-2 shadow-[0_14px_38px_rgba(36,27,38,0.06)]">
-            <div className="flex items-center gap-3 rounded-[18px] bg-[#fff8ef] px-4 py-3">
-              <span className="h-4 w-4 rounded-full border-2 border-[#f4a62a]" />
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search cookies, kahk, kunafa..."
-                className="w-full bg-transparent text-sm font-medium text-[#241b26] outline-none placeholder:text-[#7b717d]/55"
-              />
-            </div>
+      <section className="-mx-4 rounded-b-[38px] bg-[#9b6128] px-4 pb-8 pt-4 text-white md:mx-0 md:rounded-[38px] md:p-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-white/70">Location</p>
+            <p className="mt-1 text-sm font-black">Nairobi, Kenya</p>
           </div>
-
-          <div className="mt-5 flex gap-3">
-            <a href="#menu" className="btn-orange">View Menu</a>
-            <a
-              href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent("Hello lolo's craving, I would like to place an order.")}`}
-              target="_blank"
-              className="btn-light"
-            >
-              WhatsApp
-            </a>
-          </div>
+          <a href={`https://wa.me/${storeConfig.whatsapp}`} target="_blank" className="rounded-2xl bg-white/15 px-4 py-2 text-xs font-black">WhatsApp</a>
         </div>
 
-        <div className="hidden md:block">
-          <div className="app-card overflow-hidden">
-            <div className="aspect-[4/3] bg-[#fff2df]">
-              {heroProduct ? <ProductImage product={heroProduct} large /> : <Image src="/logo.png" alt="lolo's craving" width={420} height={300} className="m-auto h-full w-full max-w-md object-contain p-12" />}
-            </div>
-            <div className="p-6">
-              <p className="section-kicker">Fresh daily</p>
-              <h2 className="mt-2 text-2xl font-black">Order online, pickup or request delivery.</h2>
-            </div>
+        <div className="mt-5 rounded-2xl bg-white p-2">
+          <div className="flex items-center gap-3 rounded-xl bg-[#fbf4e8] px-4 py-3">
+            <span className="h-4 w-4 rounded-full border-2 border-[#9b6128]" />
+            <input
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="Search sweets, cookies, cakes..."
+              className="w-full bg-transparent text-sm font-bold text-[#221b18] outline-none placeholder:text-[#7e7169]/60"
+            />
           </div>
         </div>
       </section>
 
-      <section id="menu" className="mt-8 md:mt-14">
-        <div className="flex gap-2 overflow-x-auto pb-3 [-webkit-overflow-scrolling:touch]">
-          <button
-            type="button"
-            onClick={() => setActiveCategory('All')}
-            className={`app-chip ${activeCategory === 'All' ? 'app-chip-active' : 'app-chip-idle'}`}
-          >
-            All
+      <section id="offers" className="mt-6">
+        <div className="section-head">
+          <h2 className="section-title">Special Offers</h2>
+          <a href="#products" className="text-sm font-black text-[#9b6128]">See All</a>
+        </div>
+
+        <div className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-3 [-webkit-overflow-scrolling:touch]">
+          {displayOffers.map((offer) => (
+            <a key={offer.id} href={offer.link || '#products'} className="relative h-[170px] w-[320px] shrink-0 snap-start overflow-hidden rounded-[26px] bg-[#ddd1c4] shadow-[0_14px_36px_rgba(34,27,24,0.10)] md:w-[480px]">
+              {offer.imageUrl && <img src={offer.imageUrl} alt={offer.title} className="absolute inset-0 h-full w-full object-cover" />}
+              <div className="absolute inset-0 bg-gradient-to-r from-[#e9ddd2] via-[#e9ddd2]/85 to-transparent" />
+              <div className="relative z-10 flex h-full max-w-[62%] flex-col justify-center p-5">
+                {offer.label && <span className="mb-3 w-fit rounded-full bg-white px-3 py-1 text-xs font-black text-[#221b18]">{offer.label}</span>}
+                <h3 className="text-2xl font-black leading-tight text-[#221b18]">{offer.title}</h3>
+                {offer.discountText && <p className="mt-2 text-3xl font-black text-[#221b18]">{offer.discountText}</p>}
+                {offer.subtitle && <p className="mt-2 line-clamp-2 text-sm font-bold text-[#7e7169]">{offer.subtitle}</p>}
+                <span className="mt-3 w-fit rounded-xl bg-white px-4 py-2 text-sm font-black text-[#221b18]">{offer.buttonText}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section id="categories" className="mt-6">
+        <div className="section-head">
+          <h2 className="section-title">Categories</h2>
+          <button type="button" onClick={() => setActiveCategory('All')} className="text-sm font-black text-[#9b6128]">See All</button>
+        </div>
+
+        <div className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-3 [-webkit-overflow-scrolling:touch]">
+          <button type="button" onClick={() => setActiveCategory('All')} className="w-[78px] shrink-0 text-center">
+            <span className={`mx-auto grid h-16 w-16 place-items-center rounded-full ${activeCategory === 'All' ? 'bg-[#9b6128] text-white' : 'bg-white text-[#9b6128]'}`}>
+              All
+            </span>
+            <span className="mt-2 block text-xs font-black">All</span>
           </button>
-          {groups.map((group) => (
-            <button
-              key={group.id}
-              type="button"
-              onClick={() => setActiveCategory(group.name)}
-              className={`app-chip ${activeCategory === group.name ? 'app-chip-active' : 'app-chip-idle'}`}
-            >
-              {group.name}
+          {categories.map((category) => (
+            <button key={category.id} type="button" onClick={() => setActiveCategory(category.name)} className="w-[78px] shrink-0 text-center">
+              <span className={`mx-auto grid h-16 w-16 overflow-hidden rounded-full ${activeCategory === category.name ? 'bg-[#9b6128]' : 'bg-white'}`}>
+                {category.iconUrl ? <img src={category.iconUrl} alt={category.name} className="h-full w-full object-cover" /> : <Image src="/logo.png" alt={category.name} width={44} height={44} className="m-auto h-10 w-10 object-contain" />}
+              </span>
+              <span className="mt-2 block line-clamp-1 text-xs font-black">{category.name}</span>
             </button>
           ))}
         </div>
       </section>
 
-      {popularProducts.length > 0 && (
-        <section id="popular" className="mt-6">
-          <div className="mb-4 flex items-center justify-between">
-            <div>
-              <p className="section-kicker">Recommended</p>
-              <h2 className="text-2xl font-black text-[#241b26]">Popular today</h2>
-            </div>
-            <button type="button" onClick={() => setActiveCategory('All')} className="text-sm font-bold text-[#f4a62a]">See all</button>
-          </div>
-
-          <div className="-mx-4 flex gap-4 overflow-x-auto px-4 pb-3 [-webkit-overflow-scrolling:touch]">
-            {popularProducts.map((product) => (
-              <PopularCard key={product.id} product={product} onOpen={openProduct} />
-            ))}
-          </div>
-        </section>
-      )}
-
-      <section className="mt-8">
-        <div className="mb-4 flex items-end justify-between gap-4">
-          <div>
-            <p className="section-kicker">{activeCategory === 'All' ? 'All products' : 'Category'}</p>
-            <h2 className="text-2xl font-black text-[#241b26]">{activeCategory === 'All' ? 'Available products' : activeCategory}</h2>
-          </div>
-          <p className="text-sm font-semibold text-[#7b717d]">{filteredProducts.length} items</p>
+      <section id="products" className="mt-6">
+        <div className="section-head">
+          <h2 className="section-title">{activeCategory === 'All' ? 'Featured Products' : activeCategory}</h2>
+          <span className="text-sm font-black text-[#7e7169]">{filteredProducts.length} items</span>
         </div>
 
         {filteredProducts.length === 0 ? (
-          <div className="app-card p-8 text-center">
-            <h3 className="text-xl font-bold">No products found</h3>
-            <p className="mt-2 text-sm text-[#7b717d]">Try another category or search word.</p>
+          <div className="app-panel p-8 text-center">
+            <h3 className="text-xl font-black">No products found</h3>
+            <p className="mt-2 text-sm text-[#7e7169]">Add products from admin dashboard.</p>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
             {filteredProducts.map((product) => (
-              <CompactProductCard key={product.id} product={product} onOpen={openProduct} />
+              <ProductCard key={product.id} product={product} onOpen={openProduct} />
             ))}
           </div>
         )}
       </section>
 
-
-      <section id="social" className="mt-10">
-        <div className="rounded-[28px] border border-[#eadfd0] bg-white p-6 shadow-[0_16px_45px_rgba(36,27,38,0.06)] md:p-8">
-          <div className="mb-5 flex flex-col justify-between gap-3 md:flex-row md:items-end">
-            <div>
-              <p className="section-kicker">Connect with us</p>
-              <h2 className="text-2xl font-black text-[#241b26] md:text-3xl">Follow lolo&apos;s craving</h2>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#7b717d]">
-                Follow our official pages for new products, offers, updates and custom order ideas.
-              </p>
-            </div>
-          </div>
-          <SocialLinks />
-        </div>
-      </section>
-
-      <section id="custom" className="mt-10">
-        <div className="rounded-[28px] bg-[#3a243f] p-6 text-white md:p-8">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#f4a62a]">Custom orders</p>
-          <h2 className="mt-2 text-2xl font-black md:text-3xl">Boxes for gifts, meetings and special occasions.</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-white/75 md:text-base">
-            Request custom sweet boxes for birthdays, office treats, family gatherings and events.
-          </p>
-          <a
-            href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent("Hello lolo's craving, I want to request a custom order.")}`}
-            target="_blank"
-            className="mt-5 inline-flex rounded-2xl bg-[#f4a62a] px-5 py-3 text-sm font-bold text-white"
-          >
-            Request Custom Order
-          </a>
-        </div>
-      </section>
-
       {selectedProduct && (
-        <div className="fixed inset-0 z-[120]">
-          <button
-            type="button"
-            className="absolute inset-0 bg-[#241b26]/45 backdrop-blur-[2px]"
-            onClick={() => setSelectedProduct(null)}
-            aria-label="Close product details"
-          />
-          <div className="absolute bottom-0 left-0 right-0 max-h-[92vh] overflow-auto rounded-t-[34px] bg-white shadow-[0_-28px_90px_rgba(36,27,38,0.28)] md:bottom-8 md:left-1/2 md:right-auto md:w-[520px] md:-translate-x-1/2 md:rounded-[34px]">
-            <div className="aspect-[4/3] bg-[#fff2df]">
-              <ProductImage product={selectedProduct} large />
+        <div className="fixed inset-0 z-[130]">
+          <button type="button" className="absolute inset-0 bg-black/45" onClick={() => setSelectedProduct(null)} />
+          <div className="absolute bottom-0 left-0 right-0 max-h-[92vh] overflow-auto rounded-t-[34px] bg-white md:left-1/2 md:right-auto md:w-[520px] md:-translate-x-1/2 md:rounded-[34px]">
+            <div className="aspect-[4/3] bg-[#fbf4e8]">
+              <ProductImage src={selectedProduct.imageUrl} name={selectedProduct.name} />
             </div>
             <div className="p-6">
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex justify-between gap-4">
                 <div>
-                  <p className="section-kicker">{selectedProduct.category?.name || 'Product'}</p>
-                  <h2 className="mt-2 text-3xl font-black text-[#241b26]">{selectedProduct.name}</h2>
+                  <p className="text-sm font-black text-[#9b6128]">{selectedProduct.category?.name || 'Product'}</p>
+                  <h2 className="mt-2 text-3xl font-black">{selectedProduct.name}</h2>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedProduct(null)}
-                  className="rounded-full border border-[#eadfd0] px-4 py-2 text-sm font-bold text-[#3a243f]"
-                >
-                  Close
-                </button>
+                <button type="button" onClick={() => setSelectedProduct(null)} className="h-fit rounded-full border px-4 py-2 text-sm font-black">Close</button>
+              </div>
+              {selectedProduct.description && <p className="mt-4 leading-7 text-[#7e7169]">{selectedProduct.description}</p>}
+              <div className="mt-4 flex items-center justify-between rounded-2xl bg-[#fbf4e8] p-4">
+                <span className="font-bold text-[#7e7169]">Rating</span>
+                <span className="font-black">{Number(selectedProduct.rating || 0).toFixed(1)}</span>
+              </div>
+              <div className="mt-4 flex items-center justify-between rounded-2xl bg-[#fbf4e8] p-4">
+                <span className="font-bold text-[#7e7169]">{selectedProduct.saleType === 'WEIGHT' ? 'Price per Kg' : 'Price'}</span>
+                <span className="text-2xl font-black text-[#9b6128]">{money(selectedProduct.price)}</span>
               </div>
 
-              {selectedProduct.description && <p className="mt-4 leading-7 text-[#7b717d]">{selectedProduct.description}</p>}
-
-              <div className="mt-5 flex items-center justify-between rounded-[24px] bg-[#fff8ef] p-4">
-                <span className="text-sm font-semibold text-[#7b717d]">Price</span>
-                <span className="text-2xl font-black text-[#3a243f]">{money(selectedProduct.price)}</span>
-              </div>
-
-              <div className="mt-5 flex items-center justify-between">
-                <span className="font-bold text-[#241b26]">Quantity</span>
-                <div className="flex items-center gap-3">
-                  <button type="button" onClick={() => setQuantity(Math.max(1, quantity - 1))} className="grid h-11 w-11 place-items-center rounded-2xl border border-[#eadfd0] text-xl font-bold">-</button>
-                  <span className="min-w-8 text-center text-lg font-black">{quantity}</span>
-                  <button type="button" onClick={() => setQuantity(quantity + 1)} className="grid h-11 w-11 place-items-center rounded-2xl border border-[#eadfd0] text-xl font-bold">+</button>
+              {selectedProduct.saleType === 'WEIGHT' && (
+                <div className="mt-5">
+                  <h3 className="font-black">Select Weight</h3>
+                  <div className="mt-3 grid grid-cols-5 gap-2">
+                    {[0.5, 1, 1.5, 2, 4].map((value) => (
+                      <button key={value} type="button" onClick={() => setWeight(value)} className={`rounded-xl px-3 py-3 text-sm font-black ${weight === value ? 'bg-[#9b6128] text-white' : 'bg-[#fbf4e8] text-[#221b18]'}`}>
+                        {value} Kg
+                      </button>
+                    ))}
+                  </div>
+                  <p className="mt-4 text-sm font-bold text-[#7e7169]">Total price</p>
+                  <p className="text-2xl font-black text-[#9b6128]">{money(Math.round(selectedProduct.price * weight))}</p>
                 </div>
-              </div>
+              )}
 
               <div className="mt-6 grid gap-3">
-                <button
-                  type="button"
-                  onClick={() => {
-                    addToCart(selectedProduct, quantity);
-                    setSelectedProduct(null);
-                  }}
-                  className="rounded-2xl bg-[#f4a62a] px-5 py-4 text-sm font-black text-white"
-                >
+                <button type="button" onClick={() => { addToCart(selectedProduct, 1, selectedProduct.saleType === 'WEIGHT' ? weight : undefined); setSelectedProduct(null); }} className="rounded-2xl bg-[#9b6128] px-5 py-4 text-sm font-black text-white">
                   Add to Cart
                 </button>
-                <a
-                  href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent(`Hello lolo's craving, I want to order: ${selectedProduct.name}`)}`}
-                  target="_blank"
-                  className="rounded-2xl border border-[#eadfd0] px-5 py-4 text-center text-sm font-black text-[#3a243f]"
-                >
+                <a href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent(`Hello lolo's craving, I want to order: ${selectedProduct.name}`)}`} target="_blank" className="rounded-2xl border px-5 py-4 text-center text-sm font-black">
                   Order on WhatsApp
                 </a>
               </div>
