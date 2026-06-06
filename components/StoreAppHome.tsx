@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { money } from '@/lib/money';
 import { storeConfig } from '@/lib/config';
+import { SocialLinks } from '@/components/SocialLinks';
 
 type Product = {
   id: string;
@@ -233,6 +234,22 @@ export function StoreAppHome({ products, groups }: { products: Product[]; groups
             ))}
           </div>
         )}
+      </section>
+
+
+      <section id="social" className="mt-10">
+        <div className="rounded-[28px] border border-[#eadfd0] bg-white p-6 shadow-[0_16px_45px_rgba(36,27,38,0.06)] md:p-8">
+          <div className="mb-5 flex flex-col justify-between gap-3 md:flex-row md:items-end">
+            <div>
+              <p className="section-kicker">Connect with us</p>
+              <h2 className="text-2xl font-black text-[#241b26] md:text-3xl">Follow lolo&apos;s craving</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#7b717d]">
+                Follow our official pages for new products, offers, updates and custom order ideas.
+              </p>
+            </div>
+          </div>
+          <SocialLinks />
+        </div>
       </section>
 
       <section id="custom" className="mt-10">

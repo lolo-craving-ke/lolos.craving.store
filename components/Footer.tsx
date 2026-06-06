@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { storeConfig } from '@/lib/config';
+import { SocialLinks } from '@/components/SocialLinks';
 
 export function Footer() {
   return (
@@ -21,13 +22,15 @@ export function Footer() {
         <div>
           <h4 className="text-sm font-bold">Store</h4>
           <a className="mt-4 block text-sm text-[#7b717d] hover:text-[#3a243f]" href={storeConfig.maps} target="_blank">Google Maps</a>
-          <a className="mt-2 block text-sm text-[#7b717d] hover:text-[#3a243f]" href={`https://wa.me/${storeConfig.whatsapp}`} target="_blank">WhatsApp</a>
+          <a className="mt-2 block text-sm text-[#7b717d] hover:text-[#3a243f]" href={`https://wa.me/${storeConfig.whatsapp}`} target="_blank">WhatsApp Orders</a>
+          <p className="mt-2 text-sm text-[#7b717d]">Currency: {storeConfig.currency}</p>
         </div>
 
         <div>
-          <h4 className="text-sm font-bold">Contact</h4>
-          <p className="mt-4 text-sm text-[#7b717d]">WhatsApp: +{storeConfig.whatsapp}</p>
-          <p className="mt-2 text-sm text-[#7b717d]">Currency: {storeConfig.currency}</p>
+          <h4 className="text-sm font-bold">Social media</h4>
+          <div className="mt-4">
+            <SocialLinks compact />
+          </div>
         </div>
       </div>
     </footer>
