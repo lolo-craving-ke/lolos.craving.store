@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { storeConfig } from '@/lib/config';
-import { FloatingChat } from '@/components/FloatingChat';
 import { FloatingCart } from '@/components/FloatingCart';
+import { MobileBottomNav } from '@/components/MobileBottomNav';
 
 export const metadata: Metadata = {
   title: `${storeConfig.name} | Official Store`,
@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <FloatingCart />
-        <FloatingChat />
+        <MobileBottomNav />
       </body>
     </html>
   );

@@ -4,30 +4,30 @@ import { storeConfig } from '@/lib/config';
 
 export function Footer() {
   return (
-    <footer className="border-t border-[#e8e1ea] bg-white">
+    <footer className="border-t border-[#eadfd0] bg-white pb-24 md:pb-0">
       <div className="container-wide grid gap-8 py-10 md:grid-cols-4">
         <div>
           <Image src="/logo.png" alt="lolo's craving" width={96} height={56} className="h-12 w-auto object-contain" />
-          <p className="mt-4 text-sm leading-6 text-[#746b78]">Official online store for fresh sweets and custom bakery orders.</p>
+          <p className="mt-4 text-sm leading-6 text-[#7b717d]">Official online store for fresh sweets and custom bakery orders.</p>
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold">Menu</h4>
-          <Link className="mt-4 block text-sm text-[#746b78] hover:text-[#3a243f]" href="/">Home</Link>
-          <Link className="mt-2 block text-sm text-[#746b78] hover:text-[#3a243f]" href="/products">Products</Link>
-          <Link className="mt-2 block text-sm text-[#746b78] hover:text-[#3a243f]" href="/cart">Cart</Link>
+          <h4 className="text-sm font-bold">Menu</h4>
+          <Link className="mt-4 block text-sm text-[#7b717d] hover:text-[#3a243f]" href="/">Home</Link>
+          <a className="mt-2 block text-sm text-[#7b717d] hover:text-[#3a243f]" href="/#menu">Products</a>
+          <Link className="mt-2 block text-sm text-[#7b717d] hover:text-[#3a243f]" href="/cart">Cart</Link>
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold">Store</h4>
-          <a className="mt-4 block text-sm text-[#746b78] hover:text-[#3a243f]" href={storeConfig.maps} target="_blank">Google Maps</a>
-          <a className="mt-2 block text-sm text-[#746b78] hover:text-[#3a243f]" href={`https://wa.me/${storeConfig.whatsapp}`} target="_blank">WhatsApp</a>
+          <h4 className="text-sm font-bold">Store</h4>
+          <a className="mt-4 block text-sm text-[#7b717d] hover:text-[#3a243f]" href={storeConfig.maps} target="_blank">Google Maps</a>
+          <a className="mt-2 block text-sm text-[#7b717d] hover:text-[#3a243f]" href={`https://wa.me/${storeConfig.whatsapp}`} target="_blank">WhatsApp</a>
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold">Contact</h4>
-          <p className="mt-4 text-sm text-[#746b78]">WhatsApp: +{storeConfig.whatsapp}</p>
-          <p className="mt-2 text-sm text-[#746b78]">Currency: {storeConfig.currency}</p>
+          <h4 className="text-sm font-bold">Contact</h4>
+          <p className="mt-4 text-sm text-[#7b717d]">WhatsApp: +{storeConfig.whatsapp}</p>
+          <p className="mt-2 text-sm text-[#7b717d]">Currency: {storeConfig.currency}</p>
         </div>
       </div>
     </footer>
