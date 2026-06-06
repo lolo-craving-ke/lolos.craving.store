@@ -7,7 +7,7 @@ export function Footer() {
     <footer className="border-t border-[#e8e1ea] bg-white">
       <div className="container-wide grid gap-8 py-10 md:grid-cols-4">
         <div>
-          <Image src="/logo.png" alt="lolo's craving" width={110} height={64} className="h-14 w-auto object-contain" />
+          <Image src="/logo.png" alt="lolo's craving" width={96} height={56} className="h-12 w-auto object-contain" />
           <p className="mt-4 text-sm leading-6 text-[#746b78]">Official online store for fresh sweets and custom bakery orders.</p>
         </div>
 

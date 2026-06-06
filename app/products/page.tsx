@@ -36,6 +36,16 @@ export default async function ProductsPage() {
           </p>
         </section>
 
+        <section className="container-wide pb-6 reveal">
+          <div className="flex flex-wrap gap-2">
+            {['Cookies', 'Kahk', 'Petit Four', 'Kunafa', 'Donuts', 'Custom Boxes'].map((item) => (
+              <a key={item} href="/products" className="rounded-full border border-[#d9d0dc] bg-white px-4 py-2 text-sm font-medium text-[#3a243f]">
+                {item}
+              </a>
+            ))}
+          </div>
+        </section>
+
         <section className="container-wide pb-20 reveal">
           {safeProducts.length === 0 ? (
             <div className="rounded-2xl border border-[#e8e1ea] bg-white p-10 text-center shadow-sm">

@@ -27,10 +27,10 @@ export default async function HomePage() {
           <div className="hero-reveal">
             <p className="section-kicker">Official online store</p>
             <h1 className="mt-4 max-w-3xl text-5xl font-semibold leading-[1.05] tracking-tight md:text-7xl">
-              Fresh bakery treats and custom sweets in Nairobi.
+              Fresh Egyptian sweets and bakery treats in Nairobi.
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-[#746b78]">
-              Official store for freshly made cookies, kahk, petit four, kunafa, donuts and custom boxes.
+              Order freshly prepared cookies, kahk, petit four, kunafa, donuts and custom boxes from {storeConfig.name}.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -47,7 +47,7 @@ export default async function HomePage() {
           </div>
 
           <div className="hero-reveal-delay">
-            <div className="overflow-hidden rounded-3xl border border-[#e8e1ea] bg-white shadow-[0_22px_65px_rgba(42,35,45,0.08)]">
+            <div className="overflow-hidden rounded-3xl border border-[#e8e1ea] bg-white shadow-[0_16px_45px_rgba(42,35,45,0.06)]">
               {heroProduct?.imageUrl ? (
                 <img src={heroProduct.imageUrl} alt={heroProduct.name} className="aspect-[4/3] w-full object-cover" />
               ) : (
@@ -79,6 +79,16 @@ export default async function HomePage() {
           </div>
         </section>
 
+        <section className="container-wide py-10 reveal">
+          <div className="flex flex-wrap gap-2">
+            {['Cookies', 'Kahk', 'Petit Four', 'Kunafa', 'Donuts', 'Custom Boxes'].map((item) => (
+              <Link key={item} href="/products" className="rounded-full border border-[#d9d0dc] bg-white px-4 py-2 text-sm font-medium text-[#3a243f] transition hover:border-[#3a243f]">
+                {item}
+              </Link>
+            ))}
+          </div>
+        </section>
+
         <section className="container-wide py-16 reveal">
           <div className="mb-8 flex items-end justify-between gap-4">
             <div>
@@ -102,21 +112,21 @@ export default async function HomePage() {
         </section>
 
         <section id="about" className="container-wide py-16 reveal">
-          <div className="grid gap-8 rounded-3xl border border-[#e8e1ea] bg-white p-8 shadow-[0_22px_65px_rgba(42,35,45,0.06)] md:grid-cols-[0.8fr_1.2fr] md:p-12">
+          <div className="grid gap-8 rounded-3xl border border-[#e8e1ea] bg-white p-8 shadow-[0_16px_45px_rgba(42,35,45,0.05)] md:grid-cols-[0.8fr_1.2fr] md:p-12">
             <div>
               <p className="section-kicker">About the store</p>
               <h2 className="section-title mt-2">The official home of {storeConfig.name}</h2>
             </div>
             <div>
               <p className="text-lg leading-8 text-[#746b78]">
-                lolo's craving is a bakery store in Nairobi offering fresh sweets, daily treats and custom boxes for gifts, meetings and special occasions. This website is the official page for viewing our menu, placing orders and contacting the store.
+                {storeConfig.name} is the official online store for fresh bakery treats and custom sweets in Nairobi. Customers can browse the menu, place orders online, request custom boxes, or contact us directly on WhatsApp.
               </p>
             </div>
           </div>
         </section>
 
         <section id="custom" className="container-wide py-16 reveal">
-          <div className="grid overflow-hidden rounded-3xl border border-[#e8e1ea] bg-white shadow-[0_22px_65px_rgba(42,35,45,0.06)] md:grid-cols-2">
+          <div className="grid overflow-hidden rounded-3xl border border-[#e8e1ea] bg-white shadow-[0_16px_45px_rgba(42,35,45,0.05)] md:grid-cols-2">
             <div className="p-8 md:p-12">
               <p className="section-kicker">Custom orders</p>
               <h2 className="section-title mt-2">Boxes for gifts, meetings and special occasions.</h2>
@@ -133,6 +143,17 @@ export default async function HomePage() {
             </div>
             <div className="grid min-h-[320px] place-items-center bg-[#f3eee8] p-10">
               <Image src="/logo.png" alt="lolo's craving" width={360} height={260} className="h-auto w-full max-w-sm object-contain opacity-90" />
+            </div>
+          </div>
+        </section>
+
+        <section className="container-wide py-16 reveal">
+          <div className="rounded-3xl border border-[#e8e1ea] bg-white p-8 text-center shadow-[0_16px_45px_rgba(42,35,45,0.05)]">
+            <p className="section-kicker">Ready to order?</p>
+            <h2 className="mt-3 text-3xl font-semibold">Browse the menu or chat with us on WhatsApp.</h2>
+            <div className="mt-6 flex justify-center gap-3">
+              <Link href="/products" className="btn-solid">View Menu</Link>
+              <a href={`https://wa.me/${storeConfig.whatsapp}`} target="_blank" className="btn-outline">WhatsApp Order</a>
             </div>
           </div>
         </section>

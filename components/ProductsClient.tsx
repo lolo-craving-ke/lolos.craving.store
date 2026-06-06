@@ -41,7 +41,7 @@ export function ProductsClient({ products, categories }: { products: Product[]; 
 
   return (
     <div>
-      <div className="rounded-2xl border border-[#e8e1ea] bg-white p-4 shadow-[0_12px_35px_rgba(42,35,45,0.05)]">
+      <div className="rounded-2xl border border-[#e8e1ea] bg-white p-4 shadow-[0_10px_30px_rgba(42,35,45,0.04)]">
         <div className="grid gap-3 md:grid-cols-[1fr_220px_220px]">
           <input
             value={query}

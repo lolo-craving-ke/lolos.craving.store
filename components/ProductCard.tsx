@@ -33,16 +33,14 @@ export function ProductCard({ product }: { product: Product }) {
     <article className="product-card">
       <div className="relative aspect-[4/3] overflow-hidden bg-[#f2eee9]">
         {product.imageUrl ? (
-          <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover transition duration-500 hover:scale-[1.03]" />
+          <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover transition duration-500 hover:scale-[1.025]" />
         ) : (
           <div className="flex h-full items-center justify-center bg-[#f4efe8] text-sm font-semibold text-[#746b78]">Product image</div>
         )}
 
-        {!product.available && (
-          <div className="absolute inset-0 grid place-items-center bg-white/70 text-sm font-semibold text-[#2a232d] backdrop-blur-sm">
-            Unavailable
-          </div>
-        )}
+        <div className="absolute left-3 top-3 rounded-md bg-white/90 px-3 py-1 text-xs font-semibold text-[#3a243f] shadow-sm">
+          {product.available ? 'Available' : 'Unavailable'}
+        </div>
       </div>
 
       <div className="p-5">
@@ -66,9 +64,9 @@ export function ProductCard({ product }: { product: Product }) {
           <a
             href={whatsappHref}
             target="_blank"
-            className="rounded-md border border-[#d9d0dc] bg-white px-4 py-3 text-center text-sm font-semibold text-[#3a243f] transition hover:border-[#3a243f]"
+            className="rounded-md border border-[#d9d0dc] bg-white px-4 py-2.5 text-center text-sm font-semibold text-[#3a243f] transition hover:border-[#3a243f]"
           >
-            Order on WhatsApp
+            WhatsApp Order
           </a>
         </div>
       </div>

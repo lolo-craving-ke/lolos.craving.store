@@ -26,27 +26,27 @@ body {
 }
 
 .card {
-  @apply rounded-3xl bg-white shadow-soft border border-black/5;
+  @apply rounded-2xl bg-white border border-[#e8e1ea] shadow-[0_10px_30px_rgba(42,35,45,0.04)];
 }
 
 .btn {
-  @apply inline-flex items-center justify-center rounded-full px-5 py-3 font-semibold transition hover:scale-[1.02];
+  @apply inline-flex items-center justify-center rounded-md px-5 py-3 font-semibold transition hover:-translate-y-0.5;
 }
 
 .btn-primary {
-  @apply btn bg-plum text-white;
+  @apply btn bg-[#3a243f] text-white hover:bg-[#2f1d34];
 }
 
 .btn-soft {
-  @apply btn bg-lavender/30 text-plum;
+  @apply btn bg-[#f2eee9] text-[#3a243f] hover:bg-[#e8e1ea];
 }
 
 .input {
-  @apply w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-lavender;
+  @apply w-full rounded-md border border-[#d9d0dc] bg-white px-4 py-3 text-[#2a232d] outline-none placeholder:text-[#746b78]/50 focus:border-[#3a243f] focus:ring-2 focus:ring-[#d8c7ea]/50;
 }
 
 .label {
-  @apply text-sm font-semibold text-ink/70;
+  @apply text-sm font-semibold text-[#746b78];
 }
 
 .page-bg {
@@ -79,21 +79,21 @@ body {
 }
 
 .clean-card {
-  @apply rounded-2xl border border-[#e8e1ea] bg-white shadow-[0_12px_35px_rgba(42,35,45,0.05)] transition;
+  @apply rounded-2xl border border-[#e8e1ea] bg-white shadow-[0_10px_30px_rgba(42,35,45,0.04)] transition;
 }
 
 .clean-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 20px 50px rgba(42,35,45,0.09);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 38px rgba(42,35,45,.07);
 }
 
 .product-card {
-  @apply overflow-hidden rounded-2xl border border-[#e8e1ea] bg-white shadow-[0_12px_35px_rgba(42,35,45,0.05)] transition;
+  @apply overflow-hidden rounded-2xl border border-[#e8e1ea] bg-white shadow-[0_10px_30px_rgba(42,35,45,0.04)] transition;
 }
 
 .product-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 22px 55px rgba(42,35,45,.10);
+  transform: translateY(-3px);
+  box-shadow: 0 18px 42px rgba(42,35,45,.08);
 }
 
 .modern-input {
@@ -106,8 +106,8 @@ body {
 
 .reveal {
   opacity: 0;
-  transform: translateY(22px);
-  transition: opacity .65s ease, transform .65s ease;
+  transform: translateY(18px);
+  transition: opacity .55s ease, transform .55s ease;
 }
 
 .reveal.is-visible {
@@ -116,21 +116,41 @@ body {
 }
 
 .hero-reveal {
-  animation: heroReveal .75s ease both;
+  animation: heroReveal .65s ease both;
 }
 
 .hero-reveal-delay {
-  animation: heroReveal .75s ease .12s both;
+  animation: heroReveal .65s ease .1s both;
 }
 
 .nav-link {
   @apply text-sm font-medium text-[#746b78] transition hover:text-[#3a243f];
 }
 
+.admin-shell {
+  @apply min-h-screen bg-[#faf7f2] text-[#2a232d];
+}
+
+.admin-card {
+  @apply rounded-2xl border border-[#e8e1ea] bg-white shadow-[0_10px_30px_rgba(42,35,45,0.04)];
+}
+
+.admin-link {
+  @apply rounded-md px-4 py-3 text-sm font-semibold text-[#746b78] transition hover:bg-[#faf7f2] hover:text-[#3a243f];
+}
+
+.admin-action {
+  @apply rounded-md bg-[#3a243f] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#2f1d34];
+}
+
+.admin-muted {
+  @apply rounded-md border border-[#d9d0dc] bg-white px-4 py-3 text-sm font-semibold text-[#3a243f] transition hover:border-[#3a243f];
+}
+
 @keyframes heroReveal {
   from {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(18px);
   }
   to {
     opacity: 1;
