@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: lolos-craving-store
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    envVars:
+      - key: ADMIN_EMAIL
+        value: admin@loloscraving.com
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: ADMIN_SESSION_SECRET
+        generateValue: true
+      - key: NEXT_PUBLIC_STORE_NAME
+        value: lolo's craving
+      - key: NEXT_PUBLIC_WHATSAPP_NUMBER
+        value: "254113534345"
+      - key: NEXT_PUBLIC_GOOGLE_MAPS_LINK
+        value: https://maps.app.goo.gl/hrcHuhz9ALqXTUyA9
+      - key: NEXT_PUBLIC_CURRENCY
+        value: KSH
+      - key: DATABASE_URL
+        fromDatabase:
+          name: lolos-craving-db
+          property: connectionString
+
+databases:
+  - name: lolos-craving-db
+    plan: free

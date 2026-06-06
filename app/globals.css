@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: light; }
+body { background: #FFF8F2; color: #1F1A24; }
+
+.card { @apply rounded-3xl bg-white shadow-soft border border-black/5; }
+.btn { @apply inline-flex items-center justify-center rounded-full px-5 py-3 font-semibold transition hover:scale-[1.02]; }
+.btn-primary { @apply btn bg-plum text-white; }
+.btn-soft { @apply btn bg-lavender/30 text-plum; }
+.input { @apply w-full rounded-2xl border border-black/10 bg-white px-4 py-3 outline-none focus:ring-2 focus:ring-lavender; }
+.label { @apply text-sm font-semibold text-ink/70; }
