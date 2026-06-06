@@ -27,20 +27,20 @@ export default async function ProductsPage() {
       <ScrollReveal />
       <Header />
 
-      <main className="min-h-screen official-bg text-[#24182c]">
-        <section className="mx-auto max-w-7xl px-4 py-16 section-reveal">
-          <p className="text-sm font-black uppercase tracking-[0.18em] text-[#7b4ca0]">Official menu</p>
-          <h1 className="mt-3 text-5xl font-black tracking-tight md:text-7xl">Order From Our Store</h1>
-          <p className="mt-5 max-w-2xl text-lg leading-8 text-[#6e6175]">
-            Browse fresh bakery treats, add products to cart, or order directly through WhatsApp. All prices are in KSH.
+      <main className="page-bg min-h-screen">
+        <section className="container-wide py-16 reveal">
+          <p className="section-kicker">Menu</p>
+          <h1 className="mt-3 text-5xl font-semibold tracking-tight md:text-6xl">Order from our store</h1>
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-[#746b78]">
+            Browse available products, add items to cart, or place your order directly through WhatsApp.
           </p>
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 pb-20 section-reveal reveal-delay-1">
+        <section className="container-wide pb-20 reveal">
           {safeProducts.length === 0 ? (
-            <div className="rounded-[28px] border border-[#efe6f5] bg-white p-10 text-center shadow-sm">
-              <h3 className="text-3xl font-black">Products will appear here soon</h3>
-              <p className="mt-3 text-[#6e6175]">Add products from the admin dashboard.</p>
+            <div className="rounded-2xl border border-[#e8e1ea] bg-white p-10 text-center shadow-sm">
+              <h3 className="text-2xl font-semibold">Products will appear here soon</h3>
+              <p className="mt-3 text-[#746b78]">Add products from the admin dashboard.</p>
             </div>
           ) : (
             <ProductsClient products={safeProducts} categories={categories} />

@@ -5,7 +5,7 @@ import { FloatingChat } from '@/components/FloatingChat';
 
 export const metadata: Metadata = {
   title: `${storeConfig.name} | Official Store`,
-  description: "Official store and online ordering website for lolo's craving."
+  description: "Official online store for fresh bakery treats, custom boxes and orders in Nairobi."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
