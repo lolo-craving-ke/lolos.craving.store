@@ -2,15 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: light; }
+:root {
+  color-scheme: light;
+  --cream: #FFF8F2;
+  --lavender: #BFA7F2;
+  --mint: #BFEFEA;
+  --plum: #2B1B33;
+  --pink: #FFDDE8;
+  --soft-border: #EFE3F7;
+}
 
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background: #08070b;
-  color: #1F1A24;
+  background: var(--cream);
+  color: var(--plum);
 }
 
 .card {
@@ -37,99 +45,102 @@ body {
   @apply text-sm font-semibold text-ink/70;
 }
 
-.hero-texture {
+.pastel-bg {
   background:
-    radial-gradient(circle at 18% 22%, rgba(217, 183, 255, 0.20), transparent 30%),
-    radial-gradient(circle at 82% 10%, rgba(200, 247, 231, 0.14), transparent 28%),
-    linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 35%, rgba(255,255,255,0.03) 100%),
-    #08070b;
+    radial-gradient(circle at 18% 18%, rgba(191,167,242,0.34), transparent 28%),
+    radial-gradient(circle at 82% 14%, rgba(191,239,234,0.45), transparent 30%),
+    radial-gradient(circle at 75% 78%, rgba(255,221,232,0.50), transparent 28%),
+    linear-gradient(180deg, #fffaf6 0%, #fff8f2 46%, #f9f0ff 100%);
 }
 
-.hero-texture::after {
+.soft-grid {
+  position: relative;
+}
+
+.soft-grid::before {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.25;
+  opacity: .35;
   background-image:
-    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
-  background-size: 72px 72px;
-  mask-image: linear-gradient(to bottom, black, transparent 88%);
+    linear-gradient(rgba(75,35,95,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(75,35,95,0.05) 1px, transparent 1px);
+  background-size: 64px 64px;
+  pointer-events: none;
+  mask-image: linear-gradient(to bottom, black, transparent 86%);
 }
 
-.btn-glow {
-  @apply inline-flex items-center justify-center gap-3 rounded-full px-7 py-4 font-black text-plum transition;
-  background: linear-gradient(135deg, #d9b7ff, #f2d8ff 45%, #c8f7e7);
-  box-shadow: 0 18px 55px rgba(217, 183, 255, 0.28);
+.btn-lavender {
+  @apply inline-flex items-center justify-center gap-3 rounded-full px-7 py-4 font-black text-white transition;
+  background: linear-gradient(135deg, #8f63c8, #bfa7f2);
+  box-shadow: 0 18px 45px rgba(143,99,200,0.22);
 }
 
-.btn-glow:hover {
+.btn-lavender:hover {
   transform: translateY(-2px) scale(1.02);
-  box-shadow: 0 25px 75px rgba(217, 183, 255, 0.45);
+  box-shadow: 0 24px 65px rgba(143,99,200,0.34);
 }
 
-.btn-glass {
-  @apply inline-flex items-center justify-center rounded-full border border-white/10 bg-white/[0.05] px-7 py-4 font-bold text-white backdrop-blur transition;
+.btn-mint {
+  @apply inline-flex items-center justify-center gap-3 rounded-full px-7 py-4 font-black text-plum transition;
+  background: linear-gradient(135deg, #bfefea, #e6fffb);
+  box-shadow: 0 18px 45px rgba(92,190,177,0.18);
 }
 
-.btn-glass:hover {
-  @apply border-lavender/50 bg-lavender/10;
-  transform: translateY(-2px);
+.btn-mint:hover {
+  transform: translateY(-2px) scale(1.02);
 }
 
-.feature-chip {
-  @apply rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur;
+.btn-outline-soft {
+  @apply inline-flex items-center justify-center rounded-full border border-[#e4d5f3] bg-white/70 px-7 py-4 font-black text-plum shadow-sm backdrop-blur transition hover:-translate-y-0.5 hover:border-lavender hover:bg-white;
 }
 
-.feature-chip span {
-  @apply mb-2 block text-2xl text-lavender;
+.info-pill {
+  @apply rounded-3xl border border-[#efe3f7] bg-white/70 p-4 shadow-sm backdrop-blur;
+}
+
+.info-pill span {
+  @apply mb-2 block text-2xl;
+}
+
+.service-soft {
+  @apply flex items-center gap-4 rounded-[28px] border border-[#efe3f7] bg-white/75 p-5 shadow-sm backdrop-blur transition hover:-translate-y-1 hover:shadow-xl;
+}
+
+.service-soft span {
+  @apply grid h-14 w-14 shrink-0 place-items-center rounded-full text-2xl;
+  background: linear-gradient(135deg, #bfefea, #ffddea);
+}
+
+.modern-input {
+  @apply w-full rounded-2xl border border-[#e9dff2] bg-white px-4 py-3 text-plum outline-none placeholder:text-plum/35 focus:border-lavender focus:ring-2 focus:ring-lavender/20;
+}
+
+.modern-select {
+  @apply rounded-2xl border border-[#e9dff2] bg-white px-4 py-3 text-plum outline-none focus:border-lavender;
+}
+
+.reveal {
+  animation: revealUp .85s ease both;
+}
+
+.reveal-delay {
+  animation: revealUp .85s ease .12s both;
 }
 
 .float-card {
   animation: floatCard 5s ease-in-out infinite;
 }
 
-.service-card {
-  @apply flex items-center gap-4 rounded-3xl border border-white/10 bg-black/20 p-5 text-white/80 transition hover:-translate-y-1 hover:border-lavender/40 hover:bg-white/[0.08];
-}
-
-.service-card span {
-  @apply grid h-14 w-14 shrink-0 place-items-center rounded-full bg-mint text-2xl shadow-[0_0_35px_rgba(200,247,231,0.35)];
-}
-
-.service-card b {
-  @apply text-white;
-}
-
-.service-card p {
-  @apply mt-1 text-sm text-white/50;
-}
-
 .product-animate {
-  animation: productIn 0.7s ease both;
-}
-
-.reveal {
-  animation: revealUp 0.9s ease both;
-}
-
-.reveal-delay {
-  animation: revealUp 0.9s ease 0.15s both;
-}
-
-.modern-input {
-  @apply w-full rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 text-white outline-none backdrop-blur placeholder:text-white/35 focus:border-lavender/60 focus:ring-2 focus:ring-lavender/20;
-}
-
-.modern-select {
-  @apply rounded-2xl border border-white/10 bg-[#15131d] px-4 py-3 text-white outline-none focus:border-lavender/60;
+  animation: productIn .65s ease both;
 }
 
 @keyframes revealUp {
   from {
     opacity: 0;
-    transform: translateY(28px);
-    filter: blur(12px);
+    transform: translateY(24px);
+    filter: blur(10px);
   }
   to {
     opacity: 1;
@@ -143,14 +154,14 @@ body {
     transform: translateY(0) rotate(-1deg);
   }
   50% {
-    transform: translateY(-14px) rotate(1deg);
+    transform: translateY(-12px) rotate(1deg);
   }
 }
 
 @keyframes productIn {
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.98);
+    transform: translateY(16px) scale(.985);
   }
   to {
     opacity: 1;

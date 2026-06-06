@@ -25,23 +25,22 @@ export default async function ProductsPage() {
     <>
       <Header />
 
-      <main className="min-h-screen overflow-hidden bg-[#08070b] text-white">
-        <section className="relative">
-          <div className="absolute inset-0 hero-texture" />
+      <main className="min-h-screen overflow-hidden pastel-bg text-plum">
+        <section className="relative soft-grid">
           <div className="relative mx-auto max-w-7xl px-4 py-14">
-            <p className="font-serif text-3xl italic text-lavender">Shop our menu</p>
-            <h1 className="mt-2 text-5xl font-black tracking-tight md:text-7xl">Premium Bakery Treats</h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-white/60">
-              Search, filter and order your favorite sweets. All prices are in KSH, with delivery and M-Pesa available.
+            <p className="font-serif text-3xl italic text-[#8f63c8]">Official menu</p>
+            <h1 className="mt-2 text-5xl font-black tracking-tight md:text-7xl">Order From Our Store</h1>
+            <p className="mt-5 max-w-2xl text-lg leading-8 text-plum/60">
+              Browse our fresh treats, add your favorites to cart, or order directly through WhatsApp. All prices are in KSH.
             </p>
           </div>
         </section>
 
         <section className="mx-auto max-w-7xl px-4 pb-20">
           {safeProducts.length === 0 ? (
-            <div className="rounded-[36px] border border-white/10 bg-white/[0.06] p-10 text-center shadow-2xl backdrop-blur">
+            <div className="rounded-[36px] border border-[#efe3f7] bg-white/80 p-10 text-center shadow-sm backdrop-blur">
               <h3 className="text-3xl font-black">Products will appear here soon</h3>
-              <p className="mt-3 text-white/60">Add products from the admin dashboard.</p>
+              <p className="mt-3 text-plum/60">Add products from the admin dashboard.</p>
             </div>
           ) : (
             <ProductsClient products={safeProducts} categories={categories} />

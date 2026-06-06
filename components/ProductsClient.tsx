@@ -41,7 +41,7 @@ export function ProductsClient({ products, categories }: { products: Product[]; 
 
   return (
     <div>
-      <div className="rounded-[32px] border border-white/10 bg-white/[0.06] p-4 backdrop-blur">
+      <div className="rounded-[32px] border border-[#efe3f7] bg-white/80 p-4 shadow-sm backdrop-blur">
         <div className="grid gap-3 md:grid-cols-[1fr_220px_220px]">
           <input
             value={query}
@@ -64,10 +64,10 @@ export function ProductsClient({ products, categories }: { products: Product[]; 
         </div>
       </div>
 
-      <p className="mt-6 text-sm font-bold text-white/45">{filtered.length} product{filtered.length === 1 ? '' : 's'} found</p>
+      <p className="mt-6 text-sm font-black text-plum/45">{filtered.length} product{filtered.length === 1 ? '' : 's'} found</p>
 
       {filtered.length === 0 ? (
-        <div className="mt-8 rounded-[32px] border border-white/10 bg-white/[0.06] p-10 text-center text-white/60">
+        <div className="mt-8 rounded-[32px] border border-[#efe3f7] bg-white/80 p-10 text-center text-plum/60">
           No products match your search.
         </div>
       ) : (
