@@ -39,8 +39,8 @@ body {
 
 .hero-texture {
   background:
-    radial-gradient(circle at 20% 20%, rgba(217, 183, 255, 0.18), transparent 30%),
-    radial-gradient(circle at 80% 10%, rgba(200, 247, 231, 0.12), transparent 28%),
+    radial-gradient(circle at 18% 22%, rgba(217, 183, 255, 0.20), transparent 30%),
+    radial-gradient(circle at 82% 10%, rgba(200, 247, 231, 0.14), transparent 28%),
     linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 35%, rgba(255,255,255,0.03) 100%),
     #08070b;
 }
@@ -49,12 +49,12 @@ body {
   content: "";
   position: absolute;
   inset: 0;
-  opacity: 0.26;
+  opacity: 0.25;
   background-image:
     linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
   background-size: 72px 72px;
-  mask-image: linear-gradient(to bottom, black, transparent 85%);
+  mask-image: linear-gradient(to bottom, black, transparent 88%);
 }
 
 .btn-glow {
@@ -90,11 +90,11 @@ body {
 }
 
 .service-card {
-  @apply flex items-center gap-4 rounded-3xl border border-white/10 bg-black/20 p-5 text-white/80;
+  @apply flex items-center gap-4 rounded-3xl border border-white/10 bg-black/20 p-5 text-white/80 transition hover:-translate-y-1 hover:border-lavender/40 hover:bg-white/[0.08];
 }
 
 .service-card span {
-  @apply grid h-14 w-14 place-items-center rounded-full bg-mint text-2xl shadow-[0_0_35px_rgba(200,247,231,0.35)];
+  @apply grid h-14 w-14 shrink-0 place-items-center rounded-full bg-mint text-2xl shadow-[0_0_35px_rgba(200,247,231,0.35)];
 }
 
 .service-card b {
@@ -115,6 +115,14 @@ body {
 
 .reveal-delay {
   animation: revealUp 0.9s ease 0.15s both;
+}
+
+.modern-input {
+  @apply w-full rounded-2xl border border-white/10 bg-white/[0.06] px-4 py-3 text-white outline-none backdrop-blur placeholder:text-white/35 focus:border-lavender/60 focus:ring-2 focus:ring-lavender/20;
+}
+
+.modern-select {
+  @apply rounded-2xl border border-white/10 bg-[#15131d] px-4 py-3 text-white outline-none focus:border-lavender/60;
 }
 
 @keyframes revealUp {

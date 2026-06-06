@@ -34,13 +34,13 @@ export default async function HomePage() {
             <div className="reveal">
               <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-mint shadow-[0_0_30px_rgba(202,255,239,0.08)] backdrop-blur">
                 <span className="h-2 w-2 rounded-full bg-mint shadow-[0_0_18px_#C8F7E7]" />
-                Fresh • Handmade • Premium
+                Fresh Egyptian sweets in Nairobi
               </div>
 
               <h1 className="mt-7 max-w-3xl text-5xl font-black leading-[0.95] tracking-tight md:text-7xl">
-                Freshly Baked
+                Handmade Sweets,
                 <span className="block bg-gradient-to-r from-lavender via-[#f5d6ff] to-mint bg-clip-text font-serif italic text-transparent">
-                  Cravings.
+                  Fresh Daily.
                 </span>
               </h1>
 
@@ -49,18 +49,18 @@ export default async function HomePage() {
               </p>
 
               <div className="mt-8 flex flex-wrap gap-4">
-                <Link href="/products" className="btn-glow">
-                  Shop now <span>→</span>
-                </Link>
-                <a href={`https://wa.me/${storeConfig.whatsapp}`} target="_blank" className="btn-glass">
-                  Order on WhatsApp
+                <a href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent('Hello lolo\'s craving, I would like to place an order.')}`} target="_blank" className="btn-glow">
+                  Order on WhatsApp <span>→</span>
                 </a>
+                <Link href="/products" className="btn-glass">View menu</Link>
+                <Link href="/products" className="btn-glass">Shop now</Link>
               </div>
 
-              <div className="mt-10 grid max-w-xl grid-cols-3 gap-4 text-sm text-white/70">
-                <div className="feature-chip"><span>✦</span> Premium Ingredients</div>
-                <div className="feature-chip"><span>♡</span> Made With Love</div>
-                <div className="feature-chip"><span>⏱</span> Fresh Everyday</div>
+              <div className="mt-10 grid max-w-xl grid-cols-2 gap-4 text-sm text-white/70 md:grid-cols-4">
+                <div className="feature-chip"><span>✦</span> Fresh Daily</div>
+                <div className="feature-chip"><span>🚚</span> Delivery</div>
+                <div className="feature-chip"><span>💳</span> M-Pesa</div>
+                <div className="feature-chip"><span>📍</span> Pickup</div>
               </div>
             </div>
 
@@ -71,7 +71,7 @@ export default async function HomePage() {
                 </div>
 
                 <div className="absolute bottom-10 left-8 z-10 rounded-3xl border border-white/10 bg-black/35 px-5 py-4 text-sm text-white/80 backdrop-blur">
-                  🚚 Delivering happiness<br />across Nairobi & beyond
+                  🚚 Delivery available<br />M-Pesa accepted
                 </div>
 
                 <div className="absolute inset-8 rounded-[40px] bg-gradient-to-br from-white/10 to-white/0" />
@@ -88,20 +88,34 @@ export default async function HomePage() {
           </div>
 
           <div className="relative mx-auto max-w-6xl px-4 pb-12">
-            <div className="grid gap-4 rounded-[32px] border border-white/10 bg-white/[0.06] p-4 shadow-2xl backdrop-blur md:grid-cols-3">
-              <div className="service-card"><span>🚚</span><div><b>Timely Delivery</b><p>Fast and reliable delivery.</p></div></div>
-              <div className="service-card"><span>💳</span><div><b>Lipa na M-Pesa</b><p>Secure M-Pesa payments.</p></div></div>
-              <div className="service-card"><span>💬</span><div><b>Order on WhatsApp</b><p>Chat directly to place your order.</p></div></div>
+            <div className="grid gap-4 rounded-[32px] border border-white/10 bg-white/[0.06] p-4 shadow-2xl backdrop-blur md:grid-cols-4">
+              <div className="service-card"><span>🚚</span><div><b>Delivery Available</b><p>Fresh sweets delivered to your door.</p></div></div>
+              <div className="service-card"><span>💳</span><div><b>Lipa na M-Pesa</b><p>Simple and secure payment.</p></div></div>
+              <div className="service-card"><span>💬</span><div><b>Chat Support</b><p>Talk to us before ordering.</p></div></div>
+              <div className="service-card"><span>📍</span><div><b>Pickup Ready</b><p>Collect directly from the shop.</p></div></div>
             </div>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-4 py-10">
+          <div className="overflow-hidden rounded-[34px] border border-lavender/20 bg-gradient-to-r from-lavender/20 via-white/[0.06] to-mint/10 p-6 shadow-[0_30px_100px_rgba(217,183,255,0.12)] backdrop-blur md:flex md:items-center md:justify-between">
+            <div>
+              <p className="font-serif text-3xl italic text-lavender">Today&apos;s Offer</p>
+              <h2 className="mt-2 text-3xl font-black">Ask about our fresh daily deals</h2>
+              <p className="mt-2 text-white/60">Special boxes, party orders and seasonal treats available on request.</p>
+            </div>
+            <a href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent('Hello lolo\'s craving, what offers are available today?')}`} target="_blank" className="btn-glow mt-6 md:mt-0">
+              Ask on WhatsApp
+            </a>
           </div>
         </section>
 
         <section className="relative mx-auto max-w-7xl px-4 py-16">
           <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="font-serif text-3xl italic text-lavender">Our</p>
-              <h2 className="text-4xl font-black tracking-tight md:text-5xl">Featured Treats</h2>
-              <p className="mt-3 max-w-lg text-white/55">Handpicked favorites ready for your next craving.</p>
+              <p className="font-serif text-3xl italic text-lavender">Customer</p>
+              <h2 className="text-4xl font-black tracking-tight md:text-5xl">Favorites</h2>
+              <p className="mt-3 max-w-lg text-white/55">Handpicked best sellers ready for your next craving.</p>
             </div>
             <Link href="/products" className="group font-bold text-lavender">
               View all products <span className="transition group-hover:translate-x-1">→</span>
@@ -125,7 +139,7 @@ export default async function HomePage() {
           )}
         </section>
 
-        <section className="mx-auto max-w-7xl px-4 pb-20">
+        <section className="mx-auto max-w-7xl px-4 py-10">
           <div className="rounded-[34px] border border-white/10 bg-white/[0.05] p-6 backdrop-blur">
             <div className="mb-5 flex items-center justify-between">
               <div>
@@ -150,6 +164,36 @@ export default async function HomePage() {
                 ))}
               </div>
             )}
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-4 py-16">
+          <div className="grid gap-5 md:grid-cols-3">
+            {[
+              ['Fresh and delicious sweets. The packaging looked beautiful!', '★★★★★', 'Nairobi Customer'],
+              ['Fast delivery and very easy to order on WhatsApp.', '★★★★★', 'Happy Client'],
+              ['The cookies and kahk taste premium and homemade.', '★★★★★', 'Regular Customer']
+            ].map(([text, stars, name]) => (
+              <div key={text} className="rounded-[30px] border border-white/10 bg-white/[0.06] p-6 backdrop-blur transition hover:-translate-y-1 hover:border-lavender/40">
+                <p className="text-xl text-mint">{stars}</p>
+                <p className="mt-4 leading-7 text-white/70">“{text}”</p>
+                <p className="mt-5 font-black text-lavender">{name}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-7xl px-4 pb-24">
+          <div className="rounded-[36px] border border-white/10 bg-white/[0.06] p-8 backdrop-blur md:flex md:items-center md:justify-between">
+            <div>
+              <p className="font-serif text-3xl italic text-lavender">Visit Our Store</p>
+              <h2 className="mt-2 text-4xl font-black">Pickup and delivery available</h2>
+              <p className="mt-3 max-w-xl text-white/60">Open Google Maps to visit us, or chat with our team to place your order.</p>
+            </div>
+            <div className="mt-7 flex flex-wrap gap-3 md:mt-0">
+              <a href={storeConfig.maps} target="_blank" className="btn-glass">Open Google Maps</a>
+              <a href={`https://wa.me/${storeConfig.whatsapp}`} target="_blank" className="btn-glow">Talk to us</a>
+            </div>
           </div>
         </section>
       </main>
