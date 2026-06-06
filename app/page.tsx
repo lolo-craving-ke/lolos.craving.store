@@ -1,15 +1,14 @@
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { prisma } from '@/lib/prisma';
-import { ScrollReveal } from '@/components/ScrollReveal';
 import { StoreAppHome } from '@/components/StoreAppHome';
 
 export default async function HomePage() {
-  const [products, categories] = await Promise.all([
+  const [products, categories, offers] = await Promise.all([
     prisma.product.findMany({
       where: { available: true },
       include: { category: true },
-      orderBy: { createdAt: 'desc' }
+      orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }]
     }),
     prisma.category.findMany({
       orderBy: { sortOrder: 'asc' },
@@ -17,9 +16,13 @@ export default async function HomePage() {
         products: {
           where: { available: true },
           include: { category: true },
-          orderBy: { createdAt: 'desc' }
+          orderBy: [{ featured: 'desc' }, { createdAt: 'desc' }]
         }
       }
+    }),
+    prisma.offer.findMany({
+      where: { active: true },
+      orderBy: [{ sortOrder: 'asc' }, { createdAt: 'desc' }]
     })
   ]);
 
@@ -30,40 +33,48 @@ export default async function HomePage() {
     price: product.price,
     imageUrl: product.imageUrl,
     available: product.available,
+    saleType: product.saleType,
+    rating: product.rating,
+    badge: product.badge,
+    featured: product.featured,
     category: product.category ? { name: product.category.name } : null
   }));
 
-  const groups = categories
-    .filter((category) => category.products.length > 0)
-    .map((category) => ({
-      id: category.id,
-      name: category.name,
-      products: category.products.map((product) => ({
-        id: product.id,
-        name: product.name,
-        description: product.description,
-        price: product.price,
-        imageUrl: product.imageUrl,
-        available: product.available,
-        category: product.category ? { name: product.category.name } : null
-      }))
-    }));
+  const safeCategories = categories.map((category) => ({
+    id: category.id,
+    name: category.name,
+    iconUrl: category.iconUrl,
+    products: category.products.map((product) => ({
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      imageUrl: product.imageUrl,
+      available: product.available,
+      saleType: product.saleType,
+      rating: product.rating,
+      badge: product.badge,
+      featured: product.featured,
+      category: product.category ? { name: product.category.name } : null
+    }))
+  }));
 
-  const uncategorized = safeProducts.filter((product) => !product.category);
-  if (uncategorized.length > 0) {
-    groups.push({
-      id: 'other',
-      name: 'Other Products',
-      products: uncategorized
-    });
-  }
+  const safeOffers = offers.map((offer) => ({
+    id: offer.id,
+    title: offer.title,
+    subtitle: offer.subtitle,
+    label: offer.label,
+    discountText: offer.discountText,
+    buttonText: offer.buttonText,
+    imageUrl: offer.imageUrl,
+    link: offer.link
+  }));
 
   return (
     <>
-      <ScrollReveal />
       <Header />
-      <main className="page-bg">
-        <StoreAppHome products={safeProducts} groups={groups} />
+      <main className="app-bg">
+        <StoreAppHome products={safeProducts} categories={safeCategories} offers={safeOffers} />
       </main>
       <Footer />
     </>

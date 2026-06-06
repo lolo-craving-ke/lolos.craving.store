@@ -1,0 +1,101 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  NEW
+  PREPARING
+  READY
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  UNPAID
+  PAID
+}
+
+enum DeliveryType {
+  DELIVERY
+  PICKUP
+}
+
+enum SaleType {
+  QUANTITY
+  WEIGHT
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  iconUrl   String?   @db.Text
+  sortOrder Int       @default(0)
+  products  Product[]
+  createdAt DateTime  @default(now())
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  price       Int
+  imageUrl    String?     @db.Text
+  available   Boolean     @default(true)
+  saleType    SaleType    @default(QUANTITY)
+  rating      Float       @default(4.8)
+  badge       String?
+  featured    Boolean     @default(false)
+  categoryId  String?
+  category    Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  orderItems  OrderItem[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model Offer {
+  id           String   @id @default(cuid())
+  title        String
+  subtitle     String?
+  label        String?
+  discountText String?
+  buttonText   String   @default("Shop Now")
+  imageUrl     String?  @db.Text
+  link         String   @default("/#menu")
+  active       Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Order {
+  id              String        @id @default(cuid())
+  orderNumber     Int           @default(autoincrement())
+  customerName    String
+  customerPhone   String
+  customerAddress String?
+  deliveryType    DeliveryType
+  paymentMethod   String
+  paymentStatus   PaymentStatus @default(UNPAID)
+  status          OrderStatus   @default(NEW)
+  notes           String?
+  total           Int
+  items           OrderItem[]
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  unitPrice Int
+  total     Int
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+}

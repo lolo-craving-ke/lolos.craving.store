@@ -6,7 +6,7 @@ import { MobileBottomNav } from '@/components/MobileBottomNav';
 
 export const metadata: Metadata = {
   title: `${storeConfig.name} | Official Store`,
-  description: "Official online store for fresh Egyptian sweets, bakery treats, custom boxes and orders in Nairobi."
+  description: "Official online store for fresh bakery treats, special offers and custom orders in Nairobi."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
