@@ -30,20 +30,20 @@ export function ProductCard({ product }: { product: Product }) {
   const whatsappHref = `https://wa.me/${storeConfig.whatsapp}?text=${whatsappMessage}`;
 
   return (
-    <article className="group overflow-hidden rounded-[30px] border border-[#efe3f7] bg-white text-[#2B1B33] shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-[0_24px_70px_rgba(75,35,95,0.16)]">
-      <div className="relative h-64 overflow-hidden bg-gradient-to-br from-[#fff5fb] via-white to-[#effffb]">
+    <article className="official-card group overflow-hidden">
+      <div className="relative h-56 overflow-hidden bg-gradient-to-br from-[#fff7fb] to-[#effffb]">
         {product.imageUrl ? (
-          <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-108" />
+          <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
         ) : (
           <div className="flex h-full items-center justify-center text-7xl transition duration-500 group-hover:scale-110">🍪</div>
         )}
 
-        <div className="absolute left-4 top-4 rounded-full border border-[#efe3f7] bg-white/85 px-3 py-1 text-xs font-black uppercase tracking-wide text-[#8f63c8] backdrop-blur">
+        <div className="absolute left-4 top-4 rounded-full bg-white/88 px-3 py-1 text-xs font-black uppercase tracking-wide text-[#7b4ca0] shadow-sm backdrop-blur">
           {product.category?.name || 'Product'}
         </div>
 
         {!product.available && (
-          <div className="absolute inset-0 grid place-items-center bg-white/70 text-xl font-black text-plum backdrop-blur-sm">
+          <div className="absolute inset-0 grid place-items-center bg-white/70 text-xl font-black text-[#24182c] backdrop-blur-sm">
             Unavailable
           </div>
         )}
@@ -51,25 +51,25 @@ export function ProductCard({ product }: { product: Product }) {
 
       <div className="p-5">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="text-xl font-black leading-tight">{product.name}</h3>
-          <p className="shrink-0 rounded-full bg-[#BFEFEA] px-3 py-1 text-sm font-black text-[#4b235f]">{money(product.price)}</p>
+          <h3 className="text-lg font-black leading-tight text-[#24182c]">{product.name}</h3>
+          <p className="shrink-0 rounded-full bg-[#e8daff] px-3 py-1 text-sm font-black text-[#7b4ca0]">{money(product.price)}</p>
         </div>
 
-        {product.description && <p className="mt-3 line-clamp-2 text-sm leading-6 text-plum/55">{product.description}</p>}
+        {product.description && <p className="mt-3 line-clamp-2 text-sm leading-6 text-[#6e6175]">{product.description}</p>}
 
         <div className="mt-5 grid gap-3">
           <button
             disabled={!product.available}
             onClick={() => addToCart(product)}
-            className="rounded-full bg-[#BFA7F2] px-5 py-3 font-black text-white transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
+            className="rounded-xl bg-[#b894ea] px-5 py-3 text-sm font-black text-white transition hover:scale-[1.01] disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
           >
-            {product.available ? 'Add to cart' : 'Unavailable'}
+            {product.available ? 'Add to Cart' : 'Unavailable'}
           </button>
 
           <a
             href={whatsappHref}
             target="_blank"
-            className="rounded-full border border-[#efe3f7] bg-[#fff8f2] px-5 py-3 text-center text-sm font-black text-[#4b235f] transition hover:border-[#BFEFEA] hover:bg-[#effffb]"
+            className="rounded-xl bg-[#e6fbf6] px-5 py-3 text-center text-sm font-black text-[#2a7c6f] transition hover:bg-[#d3f7ee]"
           >
             Order on WhatsApp
           </a>

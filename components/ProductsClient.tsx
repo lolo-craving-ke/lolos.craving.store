@@ -21,9 +21,7 @@ export function ProductsClient({ products, categories }: { products: Product[]; 
   const filtered = useMemo(() => {
     let items = [...products];
 
-    if (category !== 'All') {
-      items = items.filter((product) => product.category?.name === category);
-    }
+    if (category !== 'All') items = items.filter((product) => product.category?.name === category);
 
     const q = query.trim().toLowerCase();
     if (q) {
@@ -41,7 +39,7 @@ export function ProductsClient({ products, categories }: { products: Product[]; 
 
   return (
     <div>
-      <div className="rounded-[32px] border border-[#efe3f7] bg-white/80 p-4 shadow-sm backdrop-blur">
+      <div className="rounded-[28px] border border-[#efe6f5] bg-white p-4 shadow-[0_14px_45px_rgba(36,24,44,0.07)]">
         <div className="grid gap-3 md:grid-cols-[1fr_220px_220px]">
           <input
             value={query}
@@ -64,10 +62,10 @@ export function ProductsClient({ products, categories }: { products: Product[]; 
         </div>
       </div>
 
-      <p className="mt-6 text-sm font-black text-plum/45">{filtered.length} product{filtered.length === 1 ? '' : 's'} found</p>
+      <p className="mt-6 text-sm font-black text-[#6e6175]">{filtered.length} product{filtered.length === 1 ? '' : 's'} found</p>
 
       {filtered.length === 0 ? (
-        <div className="mt-8 rounded-[32px] border border-[#efe3f7] bg-white/80 p-10 text-center text-plum/60">
+        <div className="mt-8 rounded-[28px] border border-[#efe6f5] bg-white p-10 text-center text-[#6e6175]">
           No products match your search.
         </div>
       ) : (

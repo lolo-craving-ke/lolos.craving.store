@@ -1,23 +1,32 @@
+import Image from 'next/image';
 import { storeConfig } from '@/lib/config';
 
 export function Footer() {
   return (
-    <footer className="border-t border-[#efe3f7] bg-white/80">
-      <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 md:grid-cols-3">
+    <footer className="border-t border-[#efe6f5] bg-white">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 md:grid-cols-4">
         <div>
-          <h3 className="text-xl font-black text-[#4b235f]">{storeConfig.name}</h3>
-          <p className="mt-2 text-sm text-plum/60">Official page and online store. Delivery available in Nairobi.</p>
+          <Image src="/logo.png" alt="lolo's craving" width={112} height={72} className="h-16 w-auto object-contain" />
+          <p className="mt-3 text-sm leading-6 text-[#6e6175]">Fresh sweets, made with love. Official online store.</p>
         </div>
+
         <div>
-          <h4 className="font-black text-plum">Contact</h4>
-          <p className="mt-2 text-sm text-plum/70">WhatsApp: +{storeConfig.whatsapp}</p>
-          <p className="text-sm text-plum/70">Currency: {storeConfig.currency}</p>
+          <h4 className="font-black">Quick links</h4>
+          <a className="mt-3 block text-sm text-[#6e6175] hover:text-[#7b4ca0]" href="/">Home</a>
+          <a className="mt-2 block text-sm text-[#6e6175] hover:text-[#7b4ca0]" href="/products">Menu</a>
+          <a className="mt-2 block text-sm text-[#6e6175] hover:text-[#7b4ca0]" href="/cart">Cart</a>
         </div>
+
         <div>
-          <h4 className="font-black text-plum">Quick links</h4>
-          <a className="mt-2 block text-sm font-bold text-[#8f63c8]" href={storeConfig.maps} target="_blank">Open Google Maps</a>
-          <a className="block text-sm font-bold text-[#8f63c8]" href="/products">View menu</a>
-          <a className="block text-sm font-bold text-[#8f63c8]" href="/admin/login">Admin login</a>
+          <h4 className="font-black">Contact us</h4>
+          <p className="mt-3 text-sm text-[#6e6175]">WhatsApp: +{storeConfig.whatsapp}</p>
+          <p className="mt-2 text-sm text-[#6e6175]">Currency: {storeConfig.currency}</p>
+          <a className="mt-2 block text-sm text-[#7b4ca0]" href={storeConfig.maps} target="_blank">Open Google Maps</a>
+        </div>
+
+        <div>
+          <h4 className="font-black">Official store</h4>
+          <p className="mt-3 text-sm leading-6 text-[#6e6175]">Order online, request custom boxes, or chat with us on WhatsApp.</p>
         </div>
       </div>
     </footer>
