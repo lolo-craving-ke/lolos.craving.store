@@ -4,21 +4,31 @@ import { storeConfig } from '@/lib/config';
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-40 border-b border-black/5 bg-cream/90 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-[#08070b]/80 text-white backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         <Link href="/" className="flex items-center gap-3">
-          <Image src="/logo.jpg" alt="lolo's craving logo" width={56} height={56} className="rounded-2xl object-cover" />
+          <Image src="/logo.jpg" alt="lolo's craving logo" width={58} height={58} className="rounded-2xl object-cover ring-1 ring-white/10" />
           <div>
-            <p className="font-black lowercase text-xl text-plum">{storeConfig.name}</p>
-            <p className="text-xs text-ink/60">Sweet moments, fresh cravings</p>
+            <p className="text-xl font-black lowercase tracking-wide text-lavender">{storeConfig.name}</p>
+            <p className="text-xs tracking-[0.25em] text-white/45">BAKED WITH LOVE</p>
           </div>
         </Link>
-        <nav className="hidden items-center gap-6 text-sm font-semibold md:flex">
-          <Link href="/products">Products</Link>
-          <Link href="/cart">Cart</Link>
-          <a href={storeConfig.maps} target="_blank">Location</a>
+
+        <nav className="hidden items-center gap-7 text-sm font-semibold text-white/75 md:flex">
+          <Link className="transition hover:text-lavender" href="/">Home</Link>
+          <Link className="transition hover:text-lavender" href="/products">Shop</Link>
+          <Link className="transition hover:text-lavender" href="/cart">Cart</Link>
+          <a className="transition hover:text-lavender" href={storeConfig.maps} target="_blank">Location</a>
+          <Link className="transition hover:text-lavender" href="/admin/login">Admin</Link>
         </nav>
-        <a className="btn-primary py-2" href={`https://wa.me/${storeConfig.whatsapp}`} target="_blank">WhatsApp</a>
+
+        <a
+          className="rounded-full bg-mint px-5 py-3 text-sm font-black text-plum shadow-[0_0_30px_rgba(200,247,231,0.25)] transition hover:scale-[1.02]"
+          href={`https://wa.me/${storeConfig.whatsapp}`}
+          target="_blank"
+        >
+          WhatsApp
+        </a>
       </div>
     </header>
   );
