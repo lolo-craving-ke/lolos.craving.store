@@ -5,9 +5,9 @@ import { storeConfig } from '@/lib/config';
 export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-[#e8e1ea] bg-white/95 backdrop-blur">
-      <div className="container-wide flex h-20 items-center justify-between">
+      <div className="container-wide flex h-16 items-center justify-between md:h-20">
         <Link href="/" className="flex items-center gap-3">
-          <Image src="/logo.png" alt="lolo's craving logo" width={96} height={56} className="h-12 w-auto object-contain" priority />
+          <Image src="/logo.png" alt="lolo's craving logo" width={96} height={56} className="h-10 w-auto object-contain md:h-12" priority />
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
@@ -25,13 +25,20 @@ export function Header() {
         >
           Order Online
         </a>
+
+        <a
+          className="rounded-md bg-[#3a243f] px-4 py-2 text-xs font-semibold text-white md:hidden"
+          href="#products"
+        >
+          Products
+        </a>
       </div>
       <div className="border-t border-[#f0e9f1] bg-[#fffdf9]">
-        <div className="container-wide flex flex-wrap gap-x-6 gap-y-2 py-2 text-xs font-medium text-[#746b78]">
-          <span>Fresh Daily</span>
-          <span>Delivery Available</span>
-          <span>M-Pesa Accepted</span>
-          <span>Custom Orders</span>
+        <div className="container-wide flex gap-x-5 overflow-x-auto py-2 text-xs font-medium text-[#746b78] [-webkit-overflow-scrolling:touch]">
+          <span className="shrink-0">Fresh Daily</span>
+          <span className="shrink-0">Delivery Available</span>
+          <span className="shrink-0">M-Pesa Accepted</span>
+          <span className="shrink-0">Custom Orders</span>
         </div>
       </div>
     </header>

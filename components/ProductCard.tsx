@@ -22,7 +22,6 @@ function addToCart(product: Product) {
 
   localStorage.setItem('lolos_cart', JSON.stringify(cart));
   window.dispatchEvent(new Event('cart-updated'));
-  alert(`${product.name} added to cart`);
 }
 
 export function ProductCard({ product }: { product: Product }) {
@@ -43,10 +42,10 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
       </div>
 
-      <div className="p-5">
+      <div className="p-4 md:p-5">
         <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#b88a5a]">{product.category?.name || 'Product'}</p>
         <div className="mt-2 flex items-start justify-between gap-4">
-          <h3 className="text-lg font-semibold leading-snug text-[#2a232d]">{product.name}</h3>
+          <h3 className="text-base font-semibold leading-snug text-[#2a232d] md:text-lg">{product.name}</h3>
           <p className="shrink-0 text-sm font-semibold text-[#3a243f]">{money(product.price)}</p>
         </div>
 

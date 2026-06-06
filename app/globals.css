@@ -17,7 +17,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 96px;
+  scroll-padding-top: 110px;
 }
 
 body {
@@ -50,8 +50,7 @@ body {
 }
 
 .page-bg {
-  background:
-    linear-gradient(180deg, #faf7f2 0%, #fffdf9 52%, #faf7f2 100%);
+  background: linear-gradient(180deg, #faf7f2 0%, #fffdf9 52%, #faf7f2 100%);
 }
 
 .container-wide {
@@ -105,14 +104,21 @@ body {
 }
 
 .reveal {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity .55s ease, transform .55s ease;
+  opacity: 1;
+  transform: none;
 }
 
-.reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+@media (min-width: 768px) {
+  .reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .55s ease, transform .55s ease;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-reveal {
@@ -155,6 +161,19 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 767px) {
+  html {
+    scroll-padding-top: 92px;
+  }
+
+  .hero-reveal,
+  .hero-reveal-delay {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
