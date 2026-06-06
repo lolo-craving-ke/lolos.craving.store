@@ -39,7 +39,11 @@ export default async function HomePage() {
 
               <div className="mt-8 flex flex-wrap gap-4">
                 <Link href="/products" className="btn-purple">View Menu</Link>
-                <a href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent('Hello lolo\\'s craving, I would like to place an order.')}`} target="_blank" className="btn-mint">
+                <a
+                  href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent("Hello lolo's craving, I would like to place an order.")}`}
+                  target="_blank"
+                  className="btn-mint"
+                >
                   Order on WhatsApp
                 </a>
                 <a href={storeConfig.maps} target="_blank" className="btn-white">Visit Our Store</a>
@@ -103,7 +107,11 @@ export default async function HomePage() {
               <p className="mt-4 max-w-lg leading-8 text-[#6e6175]">
                 We create beautiful sweet boxes for birthdays, weddings, corporate gifts and celebrations.
               </p>
-              <a href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent('Hello lolo\\'s craving, I want to request a custom order.')}`} target="_blank" className="btn-purple mt-7">
+              <a
+                href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent("Hello lolo's craving, I want to request a custom order.")}`}
+                target="_blank"
+                className="btn-purple mt-7"
+              >
                 Request Custom Order
               </a>
             </div>

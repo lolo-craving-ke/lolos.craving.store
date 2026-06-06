@@ -1,7 +1,7 @@
 import { storeConfig } from '@/lib/config';
 
 export function FloatingChat() {
-  const message = encodeURIComponent('Hello lolo\\'s craving, I need help choosing sweets.');
+  const message = encodeURIComponent("Hello lolo's craving, I need help choosing sweets.");
   const href = `https://wa.me/${storeConfig.whatsapp}?text=${message}`;
 
   return (
