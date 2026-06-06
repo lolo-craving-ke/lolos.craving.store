@@ -14,6 +14,7 @@ async function imageFromForm(formData: FormData) {
     if (file.size > MAX_IMAGE_SIZE || !file.type.startsWith('image/')) {
       redirect('/admin/categories?error=invalid-icon');
     }
+
     const bytes = await file.arrayBuffer();
     const base64 = Buffer.from(bytes).toString('base64');
     return `data:${file.type};base64,${base64}`;
@@ -24,13 +25,22 @@ async function imageFromForm(formData: FormData) {
 
 export async function createCategory(formData: FormData) {
   const name = String(formData.get('name') || '').trim();
-  const sortOrder = Number(formData.get('sortOrder') || 0);
+  const sortOrderRaw = Number(formData.get('sortOrder') || 0);
   const iconUrl = await imageFromForm(formData);
 
-  if (!name) redirect('/admin/categories?error=missing-name');
+  if (!name) {
+    redirect('/admin/categories?error=missing-name');
+  }
 
   try {
-    await prisma.category.create({ data: { name, sortOrder: Number.isFinite(sortOrder) ? sortOrder : 0, iconUrl } });
+    await prisma.category.create({
+      data: {
+        name,
+        sortOrder: Number.isFinite(sortOrderRaw) ? sortOrderRaw : 0,
+        iconUrl
+      }
+    });
+
     revalidatePath('/admin/categories');
     revalidatePath('/');
   } catch (error) {
@@ -43,8 +53,14 @@ export async function createCategory(formData: FormData) {
 
 export async function deleteCategory(formData: FormData) {
   const id = String(formData.get('id') || '');
+
+  if (!id) {
+    redirect('/admin/categories?error=missing-category');
+  }
+
   try {
     await prisma.category.delete({ where: { id } });
+
     revalidatePath('/admin/categories');
     revalidatePath('/');
   } catch (error) {

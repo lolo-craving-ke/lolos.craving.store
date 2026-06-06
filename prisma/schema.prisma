@@ -25,9 +25,15 @@ enum DeliveryType {
   PICKUP
 }
 
+enum SaleType {
+  QUANTITY
+  WEIGHT
+}
+
 model Category {
   id        String    @id @default(cuid())
   name      String    @unique
+  iconUrl   String?   @db.Text
   sortOrder Int       @default(0)
   products  Product[]
   createdAt DateTime  @default(now())
@@ -40,11 +46,30 @@ model Product {
   price       Int
   imageUrl    String?     @db.Text
   available   Boolean     @default(true)
+  saleType    SaleType    @default(QUANTITY)
+  rating      Float       @default(4.8)
+  badge       String?
+  featured    Boolean     @default(false)
   categoryId  String?
   category    Category?   @relation(fields: [categoryId], references: [id], onDelete: SetNull)
   orderItems  OrderItem[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
+}
+
+model Offer {
+  id           String   @id @default(cuid())
+  title        String
+  subtitle     String?
+  label        String?
+  discountText String?
+  buttonText   String   @default("Shop Now")
+  imageUrl     String?  @db.Text
+  link         String   @default("/#products")
+  active       Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 model Order {
