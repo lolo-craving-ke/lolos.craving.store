@@ -2,7 +2,6 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { prisma } from '@/lib/prisma';
 import { StoreAppHome } from '@/components/StoreAppHome';
-import { CustomerLoginGate } from '@/components/CustomerLoginGate';
 
 export default async function HomePage() {
   const [products, categories, offers] = await Promise.all([
@@ -82,12 +81,12 @@ export default async function HomePage() {
   }));
 
   return (
-    <CustomerLoginGate>
+    <>
       <Header />
       <main className="app-bg">
         <StoreAppHome products={safeProducts} categories={safeCategories} offers={safeOffers} />
       </main>
       <Footer />
-    </CustomerLoginGate>
+    </>
   );
 }
