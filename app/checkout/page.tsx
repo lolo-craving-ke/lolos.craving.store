@@ -15,6 +15,11 @@ type CartItem = {
   quantity: number;
 };
 
+type CustomerData = {
+  name: string;
+  phone: string;
+};
+
 function extractProductId(item: CartItem) {
   if (item.productId) return item.productId;
   return item.id.split('-')[0];
@@ -23,11 +28,19 @@ function extractProductId(item: CartItem) {
 export default function CheckoutPage() {
   const router = useRouter();
   const [items, setItems] = useState<CartItem[]>([]);
+  const [customer, setCustomer] = useState<CustomerData | null>(null);
   const [loading, setLoading] = useState(false);
   const total = useMemo(() => items.reduce((sum, item) => sum + item.price * item.quantity, 0), [items]);
 
   useEffect(() => {
     setItems(JSON.parse(localStorage.getItem('lolos_cart') || '[]'));
+
+    try {
+      const saved = localStorage.getItem('lolos_customer');
+      if (saved) setCustomer(JSON.parse(saved));
+    } catch {
+      setCustomer(null);
+    }
   }, []);
 
   async function submit(formData: FormData) {
@@ -79,11 +92,11 @@ export default function CheckoutPage() {
             <form action={submit} className="mt-6 grid gap-4">
               <div>
                 <label className="label">Customer name</label>
-                <input required name="customerName" className="input mt-2" />
+                <input required name="customerName" defaultValue={customer?.name || ''} className="input mt-2" />
               </div>
               <div>
                 <label className="label">Phone number</label>
-                <input required name="customerPhone" className="input mt-2" placeholder="07..." />
+                <input required name="customerPhone" defaultValue={customer?.phone || ''} className="input mt-2" placeholder="07..." />
               </div>
               <div>
                 <label className="label">Delivery address</label>
