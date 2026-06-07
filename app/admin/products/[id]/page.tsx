@@ -57,6 +57,12 @@ export default async function EditProductPage({ params }: { params: { id: string
           <div><label className="label">Image URL</label><input name="imageUrl" defaultValue={product.imageUrl || ''} className="input mt-2" /></div>
         </div>
 
+        <div>
+          <label className="label">Product order link</label>
+          <input name="whatsappUrl" defaultValue={product.whatsappUrl || ''} className="input mt-2" placeholder="Paste product WhatsApp / social / catalog link" />
+          <p className="mt-2 text-xs text-[#7e7169]">When filled, Order on WhatsApp opens this exact link.</p>
+        </div>
+
         <div><label className="label">Upload new product image</label><input name="imageFile" type="file" accept="image/*" className="input mt-2" /></div>
 
         <div className="flex flex-wrap gap-5">

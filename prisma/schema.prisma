@@ -45,6 +45,7 @@ model Product {
   description String?
   price       Int
   imageUrl    String?     @db.Text
+  whatsappUrl String?     @db.Text
   available   Boolean     @default(true)
   saleType    SaleType    @default(QUANTITY)
   rating      Float       @default(4.8)

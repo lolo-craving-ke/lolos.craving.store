@@ -14,7 +14,7 @@ export default async function ProductsAdminPage({ searchParams }: { searchParams
       <div>
         <p className="text-xs font-black uppercase tracking-[0.18em] text-[#9b6128]">Catalog</p>
         <h1 className="mt-2 text-4xl font-black">Products</h1>
-        <p className="mt-3 text-[#7e7169]">Set piece price or weight prices, rating, badge, and homepage order.</p>
+        <p className="mt-3 text-[#7e7169]">Set product prices, images, order link, rating and homepage order.</p>
       </div>
 
       {searchParams.error && <div className="mt-6 rounded-xl border border-red-200 bg-red-50 p-4 text-sm font-black text-red-700">Could not save product.</div>}
@@ -54,6 +54,12 @@ export default async function ProductsAdminPage({ searchParams }: { searchParams
           <div><label className="label">Image URL</label><input name="imageUrl" className="input mt-2" placeholder="Optional if you upload a file" /></div>
         </div>
 
+        <div>
+          <label className="label">Product order link</label>
+          <input name="whatsappUrl" className="input mt-2" placeholder="Paste product WhatsApp / social / catalog link" />
+          <p className="mt-2 text-xs text-[#7e7169]">When filled, Order on WhatsApp opens this exact link.</p>
+        </div>
+
         <div><label className="label">Upload product image</label><input name="imageFile" type="file" accept="image/*" className="input mt-2" /></div>
 
         <div className="flex flex-wrap gap-5">
@@ -72,6 +78,7 @@ export default async function ProductsAdminPage({ searchParams }: { searchParams
               <h3 className="text-lg font-black">{product.name}</h3>
               <p className="text-sm text-[#7e7169]">{product.category?.name || 'No category'} • {product.saleType === 'WEIGHT' ? 'Weight' : 'Quantity'} • Rating {product.rating} • Sort {product.sortOrder}</p>
               <p className="mt-2 font-black text-[#9b6128]">{money(product.saleType === 'WEIGHT' ? (product.price1kg || product.price) : (product.piecePrice || product.price))}{product.saleType === 'WEIGHT' ? ' / Kg' : ''}</p>
+              {product.whatsappUrl && <p className="mt-1 truncate text-xs font-bold text-[#7e7169]">Order link: {product.whatsappUrl}</p>}
               <div className="mt-3 flex flex-wrap gap-2 text-xs font-black">
                 {product.badge && <span className="rounded-full bg-[#f5a623] px-3 py-1 text-white">{product.badge}</span>}
                 {product.featured && <span className="rounded-full bg-[#fbf4e8] px-3 py-1">Featured</span>}

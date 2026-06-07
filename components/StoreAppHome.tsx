@@ -11,6 +11,7 @@ type Product = {
   description?: string | null;
   price: number;
   imageUrl?: string | null;
+  whatsappUrl?: string | null;
   available: boolean;
   saleType: string;
   rating: number;
@@ -40,6 +41,12 @@ type Offer = {
   imageUrl?: string | null;
   link: string;
 };
+
+function productWhatsappLink(product: Product) {
+  if (product.whatsappUrl && product.whatsappUrl.trim()) return product.whatsappUrl.trim();
+  const text = encodeURIComponent(`Hello lolo's craving, I want to order: ${product.name}`);
+  return `https://wa.me/${storeConfig.whatsapp}?text=${text}`;
+}
 
 function cartItemId(product: Product, weight?: number) {
   return weight ? `${product.id}-${weight}kg` : product.id;
@@ -126,7 +133,7 @@ function ProductCard({ product, onOpen, cartVersion }: { product: Product; onOpe
           )}
         </div>
       </button>
-      <div className="px-3 pb-3">
+      <div className="grid gap-2 px-3 pb-3">
         <button
           type="button"
           onClick={() => onOpen(product)}
@@ -134,6 +141,13 @@ function ProductCard({ product, onOpen, cartVersion }: { product: Product; onOpe
         >
           Add
         </button>
+        <a
+          href={productWhatsappLink(product)}
+          target="_blank"
+          className="tap-animate w-full rounded-2xl border border-[#eadfcc] px-4 py-3 text-center text-sm font-black text-[#221b18]"
+        >
+          Order on WhatsApp
+        </a>
       </div>
     </article>
   );
@@ -367,7 +381,7 @@ export function StoreAppHome({ products, categories, offers }: { products: Produ
                 <button type="button" onClick={handleAddFromModal} className="tap-animate rounded-2xl bg-[#9b6128] px-5 py-4 text-sm font-black text-white">
                   Add to Cart
                 </button>
-                <a href={`https://wa.me/${storeConfig.whatsapp}?text=${encodeURIComponent(`Hello lolo's craving, I want to order: ${selectedProduct.name}`)}`} target="_blank" className="tap-animate rounded-2xl border px-5 py-4 text-center text-sm font-black">
+                <a href={productWhatsappLink(selectedProduct)} target="_blank" className="tap-animate rounded-2xl border px-5 py-4 text-center text-sm font-black">
                   Order on WhatsApp
                 </a>
               </div>

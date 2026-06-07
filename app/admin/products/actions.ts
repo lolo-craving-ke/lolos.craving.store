@@ -54,6 +54,7 @@ function productData(formData: FormData, imageUrl: string | null): Prisma.Produc
     price1kg: saleType === SaleType.WEIGHT ? price1kg || price : null,
     categoryId: String(formData.get('categoryId') || '').trim() || null,
     imageUrl,
+    whatsappUrl: String(formData.get('whatsappUrl') || '').trim() || null,
     saleType,
     rating: Math.min(5, Math.max(0, Number(formData.get('rating') || 4.8))),
     badge: String(formData.get('badge') || '').trim() || null,
